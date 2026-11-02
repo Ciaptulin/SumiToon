@@ -6,7 +6,7 @@
 
 请通过以下方式私下联系：
 
-- **邮箱**：[项目维护者邮箱]
+- **邮箱**：noreply@sumi-toon.local
 - **GitHub Security Advisory**：仓库 → Security → Report a vulnerability
 
 请在报告中包含：
