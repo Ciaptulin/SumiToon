@@ -3,6 +3,8 @@
 基于 [AleToonURP](https://github.com/AleFeng/AleToonURP) 的 Unity URP NPR（二次元卡通）渲染学习项目。
 
 > 本项目是**学习性质**的工程，不是商业产品。目的是通过阅读、手敲、改造一个成熟的 NPR 管线，理解卡通渲染的完整实现，并沉淀自己的工程规范。
+> 
+> 👉 **[查看本人的重构与排错贡献记录 (CONTRIBUTION.md)](./CONTRIBUTION.md)**
 
 ---
 
