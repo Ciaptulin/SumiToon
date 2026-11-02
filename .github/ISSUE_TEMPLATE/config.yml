@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 文档
+    url: https://github.com/<your-repo>/blob/main/docs
+    about: 先查文档，很多问题已有答案
+  - name: 💬 讨论
+    url: https://github.com/<your-repo>/discussions
+    about: 开放式讨论、提问
