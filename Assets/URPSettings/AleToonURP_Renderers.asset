@@ -93,5 +93,5 @@ MonoBehaviour:
     m_RenderersAfterOpaqueAndSky: []
     m_RenderersBeforePostProcess: []
     m_RenderersAfterPostProcess:
-    - AlePostProcessUPR.CyberFaultEffectRenderer, Assembly-CSharp, Version=0.0.0.0,
+    - AlePostProcessUPR.CyberFaultEffectRenderer, FsURPPostProcessing, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
