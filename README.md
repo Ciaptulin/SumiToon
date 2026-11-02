@@ -10,7 +10,7 @@
 
 | 层 | 内容 | 归属 |
 |---|---|---|
-| `Assets/PluginsDeveloper/` | AleToonURP 原版代码 + 规范化修改 | 基于 AleFeng 的 MIT 项目 |
+| `Packages/com.sumitoon.urp/` | AleToonURP 原版代码 + 规范化修改（UPM 包） | 基于 AleFeng 的 MIT 项目 |
 | `Learning/` | 手敲记录、学习笔记、代码审查报告 | 本人 |
 | `Assets/ProductAssets/` | 角色模型与场景（学习用，不商用） | miHoYo / 第三方 |
 | `Assets/URPSettings/` | 管线与 Volume 配置 | 基于 AleToonURP 配置 |

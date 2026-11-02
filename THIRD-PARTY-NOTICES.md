@@ -11,7 +11,7 @@
 - **作者**：AleFeng
 - **许可**：MIT License
 - **用途**：NPR 卡通渲染管线与 Shader（Lit / WaterPlane）的实现基础
-- **位置**：`Assets/PluginsDeveloper/`
+- **位置**：`Packages/com.sumitoon.urp/`
 - **修改说明**：本项目在其基础上进行了代码规范化（文件头、注释、格式），核心逻辑未改动
 
 ### MIT License (AleToonURP)

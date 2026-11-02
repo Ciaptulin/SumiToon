@@ -65,7 +65,7 @@
 
 **修复：**
 - 如果 Shader 显示 \`None\` 或 \`Hidden/InternalErrorShader\`：材质的 shader 引用断了
-- 检查 \`Assets/PluginsDeveloper/Runtime/Shaders/Lit.shader\` 是否存在
+- 检查 \`Packages/com.sumitoon.urp/Runtime/Shaders/Lit.shader\` 是否存在
 - 如果文件在但材质引用断：材质的 GUID 和 shader 的 GUID 不匹配（通常是 \`.meta\` 丢失导致）
 
 **极端修复：** 重新 clone 一次（确保 \`.meta\` 完整）。
@@ -104,7 +104,7 @@
 
 **快速诊断：**
 1. \`Window → General → Console\` 搜索 \`FsURPPostProcessing\` 或 \`CustomPostProcess\`
-2. 检查 \`Assets/PluginsDeveloper/AlePostProcessingURP/\` 下的 \`.cs\` 文件是否存在
+2. 检查 \`Packages/com.sumitoon.urp/AlePostProcessingURP/\` 下的 \`.cs\` 文件是否存在
 
 **修复：**
 - 如果源码缺失（只有 \`.meta\`）：重新从 TAProject 复制
@@ -169,7 +169,7 @@ AlePostProcessingURP 的自定义效果，真正生效的开关是 **`Enable` �
 2. 如果显示 \`GBK\` 或其他：点它 → **Reopen with Encoding** → \`UTF-8\`
 3. 如果还是乱码：文件本身被写坏了，从 git 恢复：
    \`\`\`bash
-   git checkout -- Assets/PluginsDeveloper/
+   git checkout -- Packages/com.sumitoon.urp/
    \`\`\`
 
 **预防：** 项目根目录有 \`.editorconfig\`，VSCode / Rider / VS 都支持，会自动用 UTF-8。

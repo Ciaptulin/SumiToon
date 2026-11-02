@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.sumitoon.urp": "file:com.sumitoon.urp",
     "com.alefeng.outlinesmoothnormalsgenerator": "https://github.com/AleFeng/OutlineSmoothNormalsGenerator.git?path=/Packages/com.alefeng.outlinesmoothnormalsgenerator#1.8.1",
     "com.unity.ai.navigation": "2.0.0",
     "com.unity.collab-proxy": "2.12.4",

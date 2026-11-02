@@ -1,0 +1,35 @@
+{
+  "name": "com.sumitoon.urp",
+  "version": "0.1.0",
+  "displayName": "SumiToon URP",
+  "description": "基于 AleToonURP 的 Unity URP NPR（二次元卡通）渲染管线。包含三色阶明暗、外描边、边缘光、高光、自发光、MatCap、NPR 水面，以及一组可叠加的自定义后处理（模糊、故障、波纹、边缘遮罩等）。",
+  "unity": "2023.2",
+  "unityRelease": "20f1",
+  "documentationUrl": "https://github.com/<your-username>/SumiToon/blob/master/Packages/com.sumitoon.urp/Documentation~/UserManual.md",
+  "changelogUrl": "https://github.com/<your-username>/SumiToon/blob/master/Packages/com.sumitoon.urp/CHANGELOG.md",
+  "licensesUrl": "https://github.com/<your-username>/SumiToon/blob/master/LICENSE",
+  "keywords": [
+    "toon",
+    "npr",
+    "cel-shading",
+    "urp",
+    "shader",
+    "outline",
+    "anime"
+  ],
+  "author": {
+    "name": "SumiToon",
+    "url": "https://github.com/<your-username>"
+  },
+  "dependencies": {
+    "com.unity.render-pipelines.universal": "16.0.6",
+    "com.alefeng.outlinesmoothnormalsgenerator": "1.8.1"
+  },
+  "samples": [
+    {
+      "displayName": "Demo",
+      "description": "示例材质与贴图（BaseMap / NormalMap / MatCap / NoiseMap / CubeMap）",
+      "path": "Samples~/Demo"
+    }
+  ]
+}

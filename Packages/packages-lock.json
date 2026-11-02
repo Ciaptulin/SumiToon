@@ -1,11 +1,11 @@
 {
   "dependencies": {
     "com.alefeng.outlinesmoothnormalsgenerator": {
-      "version": "https://github.com/AleFeng/OutlineSmoothNormalsGenerator.git?path=/Packages/com.alefeng.outlinesmoothnormalsgenerator",
+      "version": "https://github.com/AleFeng/OutlineSmoothNormalsGenerator.git?path=/Packages/com.alefeng.outlinesmoothnormalsgenerator#1.8.1",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "1652ae5cf9036e89e6d6e210ca0589f8a3dd877f"
+      "hash": "7baf79a5a0be7ffb14e4621640ac31945b914bd3"
     },
     "com.unity.ai.navigation": {
       "version": "2.0.0",

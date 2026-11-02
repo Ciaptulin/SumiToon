@@ -69,7 +69,7 @@ du -sh Assets/
    https://github.com/AleFeng/OutlineSmoothNormalsGenerator.git?path=/Packages/com.alefeng.outlinesmoothnormalsgenerator
    \`\`\`
 
-5. 装完后 \`Assets/PluginsDeveloper/Runtime/Shaders/LitOutline.hlsl\` 应该不再报错
+5. 装完后 \`Packages/com.sumitoon.urp/Runtime/Shaders/LitOutline.hlsl\` 应该不再报错
 
 ### 3.3 确认 Console 无红色报错
 
@@ -124,9 +124,9 @@ du -sh Assets/
 - WaterPlane.shader  → 风格化水面（深度水色 + 波形 + 折射 + 反射 + 泡沫）
 
 代码结构：
-- Assets/PluginsDeveloper/Runtime/Shaders/   ← Shader + HLSL
-- Assets/PluginsDeveloper/Editor/            ← 自定义材质面板（ShaderGUI）
-- Assets/PluginsDeveloper/Example/           ← 示例材质与贴图
+- Packages/com.sumitoon.urp/Runtime/Shaders/   ← Shader + HLSL
+- Packages/com.sumitoon.urp/Editor/            ← 自定义材质面板（ShaderGUI）
+- Packages/com.sumitoon.urp/Samples~/Demo/  ← 示例材质与贴图（需手动 Import）
 - Assets/ProductAssets/                      ← 角色模型和场景（学习用）
 - Assets/Scenes/                             ← 三个 Demo 场景
 - Assets/URPSettings/                        ← 管线配置和 Volume
