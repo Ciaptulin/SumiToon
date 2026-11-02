@@ -48,6 +48,9 @@ crashlytics-build.properties
 *.tmp
 *.swp
 *~
+# 例外：UPM 规范的文档目录（~ 后缀表示 Unity 不导入）
+!Document~/
+!Document~/**
 .DS_Store
 Thumbs.db
 
