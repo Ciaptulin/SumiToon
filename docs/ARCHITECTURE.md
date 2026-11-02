@@ -20,9 +20,6 @@ SumiToon/
 │   ├── URPSettings/                   # 管线配置 + Volume
 │   └── Settings/                      # URP 模板配置（保留，供对照）
 │
-├── Learning/                          # 学习记录（Assets 外，不进 Unity 编译）
-│   ├── handwritten/                   # 手敲的核心 HLSL
-│   └── notes/                         # 学习笔记与代码审查
 │
 ├── Document~/                         # 用户手册（~ 后缀 → Unity 不导入）
 │   ├── UserManual.md                  # 每个 Shader 参数说明

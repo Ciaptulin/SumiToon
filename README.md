@@ -68,9 +68,6 @@ SumiToon/
 │   ├── Scenes/                    # DemoKafka / DemoKlee / DemoWater
 │   ├── URPSettings/               # 管线配置 + Volume
 │   └── Settings/                  # URP 模板配置（保留）
-├── Learning/                      # 学习记录（不进 Unity 编译）
-│   ├── handwritten/               # 手敲的 4 个核心 HLSL
-│   └── notes/                     # 学习笔记与代码审查报告
 ├── Packages/                      # manifest.json
 ├── ProjectSettings/
 ├── LICENSE
