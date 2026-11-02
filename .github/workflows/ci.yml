@@ -19,7 +19,8 @@ jobs:
       - name: 检查旧路径残留
         run: |
           echo "检查是否有引用已废弃的 Assets/PluginsDeveloper 路径..."
-          if grep -rn "Assets/PluginsDeveloper" --include="*.md" --include="*.json" --include="*.cs" . ; then
+          # 排除 CHANGELOG（历史记录）和 Learning（学习笔记），只检查代码和活文档
+          if grep -rn "Assets/PluginsDeveloper" --include="*.md" --include="*.json" --include="*.cs" --exclude="CHANGELOG.md" --exclude-dir="Learning" . ; then
             echo "::error::发现已废弃的路径引用 Assets/PluginsDeveloper，请改为 Packages/com.sumitoon.urp"
             exit 1
           fi
