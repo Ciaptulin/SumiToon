@@ -5,7 +5,7 @@
 // 作者：AleFeng（原作者）    最后修改：2026-11-02
 // 许可：MIT
 // ============================================================
-Shader "AleToonURP/Lit" 
+Shader "SumiToon/Lit" 
 {
     Properties
     {
@@ -410,5 +410,5 @@ Shader "AleToonURP/Lit"
     }
 
     //自定义Shader编辑器面板
-    CustomEditor "AleToonURP.ShaderGUI.ShaderGUILit"
+    CustomEditor "SumiToon.Editor.ShaderGUILit"
 }

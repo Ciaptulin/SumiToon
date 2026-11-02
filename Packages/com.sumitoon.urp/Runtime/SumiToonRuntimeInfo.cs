@@ -23,12 +23,12 @@ namespace SumiToon
         /// Lit Shader 的完整名称，用于 Shader.Find。
         /// 注意：如果未来重命名 Shader，此处需同步修改。
         /// </summary>
-        public const string LitShaderName = "AleToonURP/Lit";
+        public const string LitShaderName = "SumiToon/Lit";
 
         /// <summary>
         /// WaterPlane Shader 的完整名称，用于 Shader.Find。
         /// </summary>
-        public const string WaterPlaneShaderName = "AleToonURP/Water Plane";
+        public const string WaterPlaneShaderName = "SumiToon/Water Plane";
 
         /// <summary>
         /// 项目主页（可选，用于 About 面板）。

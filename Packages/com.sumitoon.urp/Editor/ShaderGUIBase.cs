@@ -2,7 +2,7 @@
 using UnityEditor;
 using System.Collections.Generic;
 
-namespace AleToonURP.ShaderGUI
+namespace SumiToon.Editor
 {
     /// <summary>
     /// 材质球编辑器界面

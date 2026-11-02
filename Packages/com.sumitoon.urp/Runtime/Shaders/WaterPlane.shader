@@ -5,7 +5,7 @@
 // 作者：AleFeng（原作者）    最后修改：2026-11-02
 // 许可：MIT
 // ============================================================
-Shader "AleToonURP/Water Plane"
+Shader "SumiToon/Water Plane"
 {
     Properties
     {
@@ -81,5 +81,5 @@ Shader "AleToonURP/Water Plane"
     }
 
     //自定义Shader编辑器面板
-    CustomEditor "AleToonURP.ShaderGUI.ShaderGUIWaterPlane"
+    CustomEditor "SumiToon.Editor.ShaderGUIWaterPlane"
 }
