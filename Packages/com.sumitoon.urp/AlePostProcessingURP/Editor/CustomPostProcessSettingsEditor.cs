@@ -147,7 +147,8 @@ namespace SumiToon.PostProcessing.Editor
         /// </summary>
         private void populateRenderers()
         {
-            if(_availableRenderers != null) return;
+            // 每次 OnGUI 都重新收集：TypeCache 内部有缓存，开销可忽略；
+            // 去掉永久缓存后，新增 CustomPostProcessRenderer 子类编译完即生效，无需重启 Editor
             _availableRenderers = new Dictionary<CustomPostProcessInsertPoint, List<Type>>()
             {
                 { CustomPostProcessInsertPoint.AfterOpaqueAndSky, new List<Type>() },
