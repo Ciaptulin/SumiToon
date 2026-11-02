@@ -130,5 +130,4 @@ du -sh Assets/
 - Assets/ProductAssets/                      ← 角色模型和场景（学习用）
 - Assets/Scenes/                             ← 三个 Demo 场景
 - Assets/URPSettings/                        ← 管线配置和 Volume
-- Learning/                                  ← 学习笔记（不进 Unity 编译）
 \`\`\`

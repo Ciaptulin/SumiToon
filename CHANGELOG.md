@@ -44,7 +44,6 @@
 - `docs/TROUBLESHOOTING.md`：常见问题（9 类现象：材质粉红、场景黑、白模、描边、后处理、Game 视图发糊、乱码、占位符）
 - `docs/CONTRIBUTING.md`：贡献指南（提交规范、代码规范、变体管理、Git 流程）
 - `Packages/com.sumitoon.urp/Documentation~/UserManual.md`：从 AleToonURP 原项目搬入的用户手册（含 30+ 张参数截图）
-- `Learning/notes/`：学习笔记（Shader 代码规范、AleToonURP 代码审查报告、面试复习手册）
 - README 增加"文档索引"章节
 
 ## [0.1.0] - 2026-11-02
@@ -56,7 +55,6 @@
 - 引入 AlePostProcessingURP 自定义后处理
 - 引入 ProductAssets 学习用模型与场景（DemoKafka / DemoKlee / DemoWater）
 - 引入 URPSettings 管线配置与 Volume
-- 建立 `Learning/` 学习记录目录，保存手敲的 4 个核心 HLSL
 - 建立 Git 仓库，配置 LFS / .gitignore / .gitattributes / .editorconfig
 
 ### Changed

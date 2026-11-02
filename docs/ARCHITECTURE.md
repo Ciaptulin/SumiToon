@@ -38,7 +38,6 @@ SumiToon/
 
 **规则：**
 - \`~\` 后缀的目录（如 \`Document~\`）Unity **不会导入**，适合放文档和图片
-- \`Learning/\` 在 \`Assets\` 外，Unity 不会编译，可以放心放 \`.hlsl\` 学习副本
 - \`Assets/Settings/\` 是 URP 模板默认配置，**保留但不使用**，删掉也行
 
 ---
