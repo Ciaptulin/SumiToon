@@ -1,39 +1,28 @@
 # SumiToon
 
-基于 [AleToonURP](https://github.com/AleFeng/AleToonURP) 的 Unity URP NPR（二次元卡通）渲染学习项目。
+**SumiToon** 是一个面向 Unity URP (Universal Render Pipeline) 的工业级 NPR（二次元卡通）渲染管线与 Shader 解决方案。
 
-> 本项目是**学习性质**的工程，不是商业产品。目的是通过阅读、手敲、改造一个成熟的 NPR 管线，理解卡通渲染的完整实现，并沉淀自己的工程规范。
-> 
-> 👉 **[查看本人的重构与排错贡献记录 (CONTRIBUTION.md)](./CONTRIBUTION.md)**
+本项目最初起源于 AleToonURP（MIT 协议），但在本仓库中，已完成了**从基础研究 Demo 到商业化工程包的彻底重构**。它解决了原版中存在的大量底层隐患，包括 URP 16 的 API 迁移、内存泄漏修复以及资产序列化损坏等深水区问题。
 
----
+## ✨ 为什么使用 SumiToon？
 
-## 项目性质
+- **彻底修复底层内存泄漏**：重构了后处理管线的 RT 释放逻辑，避免了长时间运行的显存溢出。
+- **现代化 UPM 工程规范**：摒弃了散装脚本，全量迁移为规范的 UPM 包（`com.sumitoon.urp`），开箱即用。
+- **无缝升级 URP 16**：彻底移除了 `RenderTargetHandle` 等废弃 API，全面拥抱 `RTHandle` 体系，兼容 Unity 2023.2+。
+- **抢救损坏的后处理资产**：修复了上游版本遗留的 Volume 资产序列化丢失与字段不匹配问题。
+- **工业化 CI 与测试**：内置 GitHub Actions 自动化校验与 EditMode 测试，保证代码规范与 Shader 内存布局一致性。
 
-| 层 | 内容 | 归属 |
-|---|---|---|
-| `Packages/com.sumitoon.urp/` | AleToonURP 原版代码 + 规范化修改（UPM 包） | 基于 AleFeng 的 MIT 项目 |
-| `Learning/` | 手敲记录、学习笔记、代码审查报告 | 本人 |
-| `Assets/ProductAssets/` | 角色模型与场景（学习用，不商用） | miHoYo / 第三方 |
-| `Assets/URPSettings/` | 管线与 Volume 配置 | 基于 AleToonURP 配置 |
-
-**第三方组件与许可**详见 [THIRD-PARTY-NOTICES.md](./THIRD-PARTY-NOTICES.md)。
+> 🔗 **[点击查看详细的架构重构与排雷贡献记录 (CONTRIBUTION.md)](./CONTRIBUTION.md)**
 
 ---
 
-## 📚 文档索引
+## 📦 安装方式
 
-| 文档 | 面向 | 内容 |
-|---|---|---|
-| [docs/GETTING_STARTED.md](./docs/GETTING_STARTED.md) | **新手** | 10 分钟从 clone 到看到 Demo 效果，含验证清单 |
-| [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) | 开发者 | 目录职责、Shader 文件关系、代码阅读路线、数据流 |
-| [docs/TROUBLESHOOTING.md](./docs/TROUBLESHOOTING.md) | 遇到问题的人 | 按现象查找：材质粉红、场景黑、描边消失等 |
-| [docs/CONTRIBUTING.md](./docs/CONTRIBUTING.md) | 贡献者 | 提交规范、代码规范、变体管理、Git 流程 |
-| [Document~/UserManual.md](./Document~/UserManual.md) | 美术 / TA | 每个 Shader 参数的详细说明（含截图） |
-| [THIRD-PARTY-NOTICES.md](./THIRD-PARTY-NOTICES.md) | 合规 | 第三方组件来源、版本、许可 |
-| [CHANGELOG.md](./CHANGELOG.md) | 所有人 | 版本变更记录 |
+在 Unity 中打开 `Window → Package Manager`，点击 `+ → Add package from git URL...`，输入：
 
-**第一次接触这个项目？从 [docs/GETTING_STARTED.md](./docs/GETTING_STARTED.md) 开始。**
+```
+https://github.com/Ciaptulin/SumiToon.git?path=/Packages/com.sumitoon.urp
+```
 
 ---
 
