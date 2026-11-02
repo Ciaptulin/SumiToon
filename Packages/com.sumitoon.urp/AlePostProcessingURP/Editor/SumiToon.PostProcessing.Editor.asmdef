@@ -1,6 +1,6 @@
 {
     "name": "SumiToon.PostProcessing.Editor",
-    "rootNamespace": "AlePostProcessURP.Editor",
+    "rootNamespace": "SumiToon.PostProcessing.Editor",
     "references": [
         "SumiToon.PostProcessing",
         "Unity.RenderPipelines.Universal.Runtime"

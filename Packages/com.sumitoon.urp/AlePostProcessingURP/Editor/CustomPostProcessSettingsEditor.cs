@@ -5,9 +5,9 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEditor;
 using UnityEditorInternal;
-using AlePostProcessURP;
+using SumiToon.PostProcessing;
 
-namespace AlePostProcessURP.Editor
+namespace SumiToon.PostProcessing.Editor
 {
     /// <summary>
     /// A custom property drawer for the settings for custom post-processing feature

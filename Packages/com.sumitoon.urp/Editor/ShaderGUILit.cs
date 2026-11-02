@@ -4,7 +4,7 @@ using UnityEditor;
 namespace SumiToon.Editor
 {
     /// <summary>
-    /// 材质球编辑器界面-AleToonURP/Lit
+    /// 材质球编辑器界面-SumiToon/Lit
     /// </summary>
     public class ShaderGUILit : ShaderGUIBase
     {

@@ -4,7 +4,7 @@ using UnityEditor;
 namespace SumiToon.Editor
 {
     /// <summary>
-    /// 材质球编辑器界面-AleToonURP/WaterPlane
+    /// 材质球编辑器界面-SumiToon/WaterPlane
     /// </summary>
     public class ShaderGUIWaterPlane : ShaderGUIBase
     {

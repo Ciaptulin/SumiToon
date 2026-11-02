@@ -92,5 +92,5 @@ MonoBehaviour:
     m_RenderersAfterOpaqueAndSky: []
     m_RenderersBeforePostProcess: []
     m_RenderersAfterPostProcess:
-    - AlePostProcessURP.CyberFaultEffectRenderer, SumiToon.PostProcessing, Version=0.0.0.0,
+    - SumiToon.PostProcessing.CyberFaultEffectRenderer, SumiToon.PostProcessing, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null

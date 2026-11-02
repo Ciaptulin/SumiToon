@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-namespace AlePostProcessURP
+namespace SumiToon.PostProcessing
 {
     [System.Serializable, VolumeComponentMenu("Able/CyberFault")]
     public class CyberFaultEffect : CustomVolumeComponent

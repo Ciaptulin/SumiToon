@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-using AlePostProcessURP;
+using SumiToon.PostProcessing;
 
-namespace AlePostProcessURP
+namespace SumiToon.PostProcessing
 {
 	[System.Serializable, VolumeComponentMenu("Able/Ripple")]
 	public class RippleEffect : CustomVolumeComponent

@@ -1,6 +1,6 @@
 {
     "name": "SumiToon.PostProcessing",
-    "rootNamespace": "AlePostProcessURP",
+    "rootNamespace": "SumiToon.PostProcessing",
     "references": [
         "Unity.RenderPipelines.Universal.Runtime",
         "Unity.RenderPipelines.Core.Runtime"

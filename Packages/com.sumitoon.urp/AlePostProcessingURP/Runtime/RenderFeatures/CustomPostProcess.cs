@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-namespace AlePostProcessURP
+namespace SumiToon.PostProcessing
 {
     /// <summary>
     /// 自定义后处理 RF

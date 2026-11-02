@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-namespace AlePostProcessURP
+namespace SumiToon.PostProcessing
 {
     /// <summary>
     /// 后处理容器 基类

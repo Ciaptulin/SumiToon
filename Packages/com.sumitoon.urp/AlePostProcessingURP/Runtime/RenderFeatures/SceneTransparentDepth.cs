@@ -15,7 +15,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Experimental.Rendering;
 
-namespace AlePostProcessURP
+namespace SumiToon.PostProcessing
 {
     /// <summary>
     /// 渲染透明物体深度到 _CameraTransparentDepthTexture，供水面 Shader 采样。
