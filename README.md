@@ -19,6 +19,22 @@
 
 ---
 
+## 📚 文档索引
+
+| 文档 | 面向 | 内容 |
+|---|---|---|
+| [docs/GETTING_STARTED.md](./docs/GETTING_STARTED.md) | **新手** | 10 分钟从 clone 到看到 Demo 效果，含验证清单 |
+| [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) | 开发者 | 目录职责、Shader 文件关系、代码阅读路线、数据流 |
+| [docs/TROUBLESHOOTING.md](./docs/TROUBLESHOOTING.md) | 遇到问题的人 | 按现象查找：材质粉红、场景黑、描边消失等 |
+| [docs/CONTRIBUTING.md](./docs/CONTRIBUTING.md) | 贡献者 | 提交规范、代码规范、变体管理、Git 流程 |
+| [Document~/UserManual.md](./Document~/UserManual.md) | 美术 / TA | 每个 Shader 参数的详细说明（含截图） |
+| [THIRD-PARTY-NOTICES.md](./THIRD-PARTY-NOTICES.md) | 合规 | 第三方组件来源、版本、许可 |
+| [CHANGELOG.md](./CHANGELOG.md) | 所有人 | 版本变更记录 |
+
+**第一次接触这个项目？从 [docs/GETTING_STARTED.md](./docs/GETTING_STARTED.md) 开始。**
+
+---
+
 ## 环境要求
 
 - **Unity**：2023.2.20f1

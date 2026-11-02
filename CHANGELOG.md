@@ -4,6 +4,16 @@
 
 ## [Unreleased]
 
+### Added
+
+- `docs/GETTING_STARTED.md`：新手入门（10 分钟从 clone 到看到效果，含 5 项验证清单）
+- `docs/ARCHITECTURE.md`：架构与代码阅读指南（目录职责、Shader 文件关系、LitMain 阅读路线、数据流）
+- `docs/TROUBLESHOOTING.md`：常见问题（8 类现象：材质粉红、场景黑、白模、描边、后处理、乱码、占位符）
+- `docs/CONTRIBUTING.md`：贡献指南（提交规范、代码规范、变体管理、Git 流程）
+- `Document~/UserManual.md`：从 AleToonURP 原项目搬入的用户手册（含 30+ 张参数截图）
+- `Learning/notes/`：学习笔记（Shader 代码规范、AleToonURP 代码审查报告、面试复习手册）
+- README 增加"文档索引"章节
+
 ## [0.1.0] - 2026-11-02
 
 ### Added
