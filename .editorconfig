@@ -1,0 +1,44 @@
+# ============================================================
+# EditorConfig
+# 统一编码 / 缩进 / 换行，避免跨编辑器差异
+# 编辑器支持：VSCode / Rider / Visual Studio 均原生支持
+# ============================================================
+
+root = true
+
+# ---- 全局 ----
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+# ---- C# ----
+[*.cs]
+indent_size = 4
+max_line_length = 120
+
+# ---- Shader / HLSL ----
+[*.shader]
+indent_size = 4
+[*.hlsl]
+indent_size = 4
+[*.cginc]
+indent_size = 4
+
+# ---- JSON / YAML ----
+[*.{json,yml,yaml}]
+indent_size = 2
+
+# ---- Markdown ----
+[*.md]
+trim_trailing_whitespace = false
+
+# ---- Unity 资产（自动生成，不检查格式）----
+[*.{asset,meta,unity,prefab,mat,anim,controller}]
+indent_style = unset
+indent_size = unset
+trim_trailing_whitespace = unset
+insert_final_newline = unset

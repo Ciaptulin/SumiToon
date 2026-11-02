@@ -1,0 +1,62 @@
+# ============================================================
+# Git LFS 配置
+# 原则：只有"大 + 二进制"的文件走 LFS；文本资产（YAML）留在 git 里以便 diff
+# 首次使用：git lfs install
+# ============================================================
+
+# ---- 3D 模型（二进制）----
+*.fbx filter=lfs diff=lfs merge=lfs -text
+*.FBX filter=lfs diff=lfs merge=lfs -text
+*.obj filter=lfs diff=lfs merge=lfs -text
+*.pmx filter=lfs diff=lfs merge=lfs -text
+*.pmd filter=lfs diff=lfs merge=lfs -text
+
+# ---- 图片（二进制）----
+*.png filter=lfs diff=lfs merge=lfs -text
+*.PNG filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.jpeg filter=lfs diff=lfs merge=lfs -text
+*.tga filter=lfs diff=lfs merge=lfs -text
+*.psd filter=lfs diff=lfs merge=lfs -text
+*.exr filter=lfs diff=lfs merge=lfs -text
+*.hdr filter=lfs diff=lfs merge=lfs -text
+*.tif filter=lfs diff=lfs merge=lfs -text
+*.tiff filter=lfs diff=lfs merge=lfs -text
+
+# ---- 音频 / 视频（二进制）----
+*.wav filter=lfs diff=lfs merge=lfs -text
+*.mp3 filter=lfs diff=lfs merge=lfs -text
+*.ogg filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+
+# ---- 大 .asset（仅特定路径，二进制内容）----
+# MMD4Mecanim 模型数据
+Assets/ProductAssets/Prefab/Character/**/*.asset filter=lfs diff=lfs merge=lfs -text
+# 地形数据
+Assets/ProductAssets/Prefab/Scene/Forest/TerrainData/TerrainData.asset filter=lfs diff=lfs merge=lfs -text
+
+# ---- 动画数据（视大小而定，一般不大；如超过 1 MB 可改 LFS）----
+# *.anim
+# *.controller
+
+# ============================================================
+# 文本资产（不进 LFS，强制 LF 换行，保留 diff 能力）
+# ============================================================
+
+*.shader text eol=lf
+*.hlsl text eol=lf
+*.cginc text eol=lf
+*.cs text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.asmdef text eol=lf
+*.asset text eol=lf
+*.unity text eol=lf
+*.prefab text eol=lf
+*.mat text eol=lf
+*.anim text eol=lf
+*.controller text eol=lf
+*.meta text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
+.editorconfig text eol=lf
