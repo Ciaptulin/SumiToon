@@ -7,6 +7,15 @@
       "dependencies": {},
       "hash": "7baf79a5a0be7ffb14e4621640ac31945b914bd3"
     },
+    "com.sumitoon.urp": {
+      "version": "file:com.sumitoon.urp",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.render-pipelines.universal": "16.0.6",
+        "com.alefeng.outlinesmoothnormalsgenerator": "1.8.1"
+      }
+    },
     "com.unity.ai.navigation": {
       "version": "2.0.0",
       "depth": 0,

@@ -8,10 +8,12 @@
 Shader "Hidden/Custom/ImageDizzy"
 {
 HLSLINCLUDE
+    // URP 16: 必须先引入 URP Core.hlsl，否则 TEXTURE2D_X 等宏在 Blit.hlsl 中未定义
+    #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
     // This file contains the "Luminance" which we use to get the grayscale value
     #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
     #include "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/Common.hlsl"
-	#include "../ShaderLibrary/Core.hlsl"
+	#include "Packages/com.sumitoon.urp/AlePostProcessingURP/ShaderLibrary/Core.hlsl"
 
     TEXTURE2D_X(_MainTex);
     float4 _MainTex_TexelSize;
