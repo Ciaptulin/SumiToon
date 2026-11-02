@@ -74,7 +74,6 @@ namespace AlePostProcessUPR
         {
             m_FilteringSettings = new FilteringSettings(renderQueueRange, layerMask);
             renderPassEvent = evt;
-            useNativeRenderPass = false;
         }
 
         public void Setup(string name)
