@@ -19,9 +19,10 @@ namespace AlePostProcessUPR
         private TransparentDepthPass depthPass = null;
 
         /// <summary>
-        /// The render target for the scene transparent depth
+        /// The render target ID for the scene transparent depth
+        /// URP 16 起 RenderTargetHandle 已废弃，改用 Shader.PropertyToID + int
         /// </summary>
-        private RenderTargetHandle sceneTransparentDepthTexture = default;
+        private int sceneTransparentDepthTextureId;
 
         /// <summary>
         /// Intializes the renderer feature resources
@@ -29,7 +30,7 @@ namespace AlePostProcessUPR
         public override void Create()
         {
             depthPass = new TransparentDepthPass(RenderPassEvent.AfterRenderingPrePasses, RenderQueueRange.transparent, -1);
-            sceneTransparentDepthTexture.Init("_CameraTransparentDepthTexture");
+            sceneTransparentDepthTextureId = Shader.PropertyToID("_CameraTransparentDepthTexture");
         }
 
         /// <summary>
@@ -38,7 +39,7 @@ namespace AlePostProcessUPR
         /// </summary>
         public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
         {
-            depthPass.Setup(sceneTransparentDepthTexture);
+            depthPass.Setup(sceneTransparentDepthTextureId);
             renderer.EnqueuePass(depthPass);
         }
     }
@@ -55,7 +56,7 @@ namespace AlePostProcessUPR
     {
         int kDepthBufferBits = 32;
 
-        private RenderTargetHandle destination;
+        private int destinationId = -1;  // -1 表示未设置（对应旧的 RenderTargetHandle.CameraTarget 语义）
 
         FilteringSettings m_FilteringSettings;
         const string m_ProfilerTag = "Transparent Depth Prepass";
@@ -74,9 +75,9 @@ namespace AlePostProcessUPR
         /// <summary>
         /// Configure the pass
         /// </summary>
-        public void Setup( RenderTargetHandle destination)
+        public void Setup(int destinationId)
         {
-            this.destination = destination;
+            this.destinationId = destinationId;
         }
 
         public override void Configure(CommandBuffer cmd, RenderTextureDescriptor cameraTextureDescriptor)
@@ -86,8 +87,8 @@ namespace AlePostProcessUPR
             descriptor.depthBufferBits = kDepthBufferBits;
             descriptor.msaaSamples = 1;
 
-            cmd.GetTemporaryRT(destination.id, descriptor, FilterMode.Point);
-            ConfigureTarget(destination.Identifier());
+            cmd.GetTemporaryRT(destinationId, descriptor, FilterMode.Point);
+            ConfigureTarget(new RenderTargetIdentifier(destinationId));
             ConfigureClear(ClearFlag.All, Color.black);
         }
 
@@ -122,10 +123,10 @@ namespace AlePostProcessUPR
             if (cmd == null)
                 throw new ArgumentNullException("cmd");
 
-            if (destination != RenderTargetHandle.CameraTarget)
+            if (destinationId != -1)
             {
-                cmd.ReleaseTemporaryRT(destination.id);
-                destination = RenderTargetHandle.CameraTarget;
+                cmd.ReleaseTemporaryRT(destinationId);
+                destinationId = -1;
             }
         }
     }

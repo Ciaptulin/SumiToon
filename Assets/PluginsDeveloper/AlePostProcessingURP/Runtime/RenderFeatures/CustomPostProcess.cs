@@ -248,9 +248,15 @@ namespace AlePostProcessUPR
 
         #region 中间RenderTexture
         /// <summary>
-        /// 临时RT 绘制目标句柄
+        /// 临时RT 名称 ID（Shader.PropertyToID 的结果）
+        /// URP 16 起 RenderTargetHandle 已废弃，改用 int ID + RenderTargetIdentifier
         /// </summary>
-        private RenderTargetHandle[] m_TempRenderTextureHandle;
+        private int[] m_TempRenderTextureIds;
+
+        /// <summary>
+        /// 临时RT 标识符（GetIntermediate 的返回值，给下游 Blit 用）
+        /// </summary>
+        private RenderTargetIdentifier[] m_TempRenderTextureIdentifiers;
 
         /// <summary>
         /// 临时RT 分配状态
@@ -270,12 +276,14 @@ namespace AlePostProcessUPR
         /// </summary>
         private void InitTempRenderTexture()
         {
-            m_TempRenderTextureHandle = new RenderTargetHandle[m_TempRenderTextureCount];
+            m_TempRenderTextureIds = new int[m_TempRenderTextureCount];
+            m_TempRenderTextureIdentifiers = new RenderTargetIdentifier[m_TempRenderTextureCount];
             m_TempRenderTextureIsAllocated = new bool[m_TempRenderTextureCount];
 
-            for (int i = 0; i < m_TempRenderTextureHandle.Length; i++)
+            for (int i = 0; i < m_TempRenderTextureCount; i++)
             {
-                m_TempRenderTextureHandle[i].Init($"_TempRenderTexture{i}");
+                m_TempRenderTextureIds[i] = Shader.PropertyToID($"_TempRenderTexture{i}");
+                m_TempRenderTextureIdentifiers[i] = new RenderTargetIdentifier(m_TempRenderTextureIds[i]);
                 m_TempRenderTextureIsAllocated[i] = false;
             }
         }
@@ -291,11 +299,11 @@ namespace AlePostProcessUPR
             //未分配时 进行RT分配
             if (!m_TempRenderTextureIsAllocated[index])
             {
-                cmd.GetTemporaryRT(m_TempRenderTextureHandle[index].id, m_TempRenderTextureDesc);
+                cmd.GetTemporaryRT(m_TempRenderTextureIds[index], m_TempRenderTextureDesc);
                 m_TempRenderTextureIsAllocated[index] = true;
             }
 
-            return m_TempRenderTextureHandle[index].Identifier();
+            return m_TempRenderTextureIdentifiers[index];
         }
 
         /// <summary>
@@ -308,7 +316,7 @@ namespace AlePostProcessUPR
             {
                 if (m_TempRenderTextureIsAllocated[i] == false) continue;
 
-                cmd.ReleaseTemporaryRT(m_TempRenderTextureHandle[i].id);
+                cmd.ReleaseTemporaryRT(m_TempRenderTextureIds[i]);
                 m_TempRenderTextureIsAllocated[i] = false;
             }
         }
