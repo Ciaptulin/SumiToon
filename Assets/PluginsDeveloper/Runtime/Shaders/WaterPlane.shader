@@ -1,0 +1,85 @@
+﻿// ============================================================
+// 文件：WaterPlane.shader
+// 用途：NPR 卡通水面着色器入口：Properties 声明 + ForwardLit Pass + 关键字 pragma
+// 依赖：同目录 Function.hlsl、WaterPlaneMain.hlsl；URP DeclareDepthTexture.hlsl、DeclareOpaqueTexture.hlsl
+// 作者：AleFeng（原作者）    最后修改：2026-11-02
+// 许可：MIT
+// ============================================================
+Shader "AleToonURP/Water Plane"
+{
+    Properties
+    {
+// ================ 基础 Basic ================
+        [HDR]_ColorShallow("Color Shallow", Color) = (0, 0.9, 1, 0) //颜色 浅水
+        [HDR]_ColorDeep("Color Deep", Color) = (0, 0.3, 0.5, 0.3) //颜色 深水
+// ================ 基础 Basic ================
+// ================= 水波 Wave =================
+        [NoScaleOffset] _BumpMap ("Bump Map", 2D) = "bump" {} //法线贴图 ●平铺由缩放参数控制，不用Tiling/Offset
+        _BumpScale ("Bump Scale", Range(0.001, 5)) = 1 //强度
+        _BumpScaleFir("BumpMap Scale First", Range(0, 5)) = 1 //纹理缩放 主要
+        _BumpScaleSec("BumpMap Scale Second", Range(0, 5)) = 1 //纹理缩放 次要
+        _FloatWaveSpeedX("Wave Speed X", Range(-1, 1)) = 0.5 //速度 X轴
+        _FloatWaveSpeedY("Wave Speed Y", Range(-1, 1)) = 0.5 //速度 Y轴
+// ================= 水波 Wave =================
+// =============== 反射 Reflect ===============
+        [NoScaleOffset]_ReflectCubeMap ("Reflect Cube Map", CUBE) = "white" {} //反射贴图
+        _ReflectIntensity ("Reflect Intensity", Range(0, 2)) = 0.1 //反射强度
+        _ReflectBulrIntensity ("Reflect Blur Intensity",Range(0, 7)) = 0.1 //模糊强度
+        _FresnelFactor ("Fresnel Factor", Range(0.001, 10)) = 5 //菲涅尔 系数
+        _FresnelIntensity ("Fresnel Intensity", Range(0, 5)) = 2 //菲涅尔 强度
+// =============== 反射 Reflect ===============
+// =============== 折射 Refract ===============
+        _RefractIntensity ("Refract Intensity", Range(0, 1)) = 0.1 //折射强度
+// =============== 折射 Refract ===============
+// ============== 边缘泡沫 EdgeFoam ==============
+        _EdgeThresholdMap ("Edge Threshold Map", 2D) = "white" {} //阈值贴图
+        [HDR]_EdgeFoamColor ("Edge Foam Color", Color) = (1, 1, 1, 1) //泡沫颜色
+        _EdgeFoamThresholdCutoff("Threshold Cutoff", Range(0, 5)) = 0.8 //阈值裁剪
+        _EdgeFoamDis ("Edge Foam Distance", Range(0.001, 2)) = 0.4 //边缘泡沫 距离
+        _EdgeFoamBlur ("Edge Foam Blur", Range(0, 2)) = 0.3 //边缘泡沫 模糊
+// ============== 边缘泡沫 EdgeFoam ==============
+    }
+
+    SubShader 
+    {
+        Tags 
+        {
+            "RenderPipeline"="UniversalPipeline"
+            "RenderType" = "Transparent"
+            "Queue" = "Transparent"
+        }
+
+        Pass 
+        {
+            Name "ForwardLit"
+            Tags {"LightMode" = "UniversalForward"}
+            ZWrite On
+            Cull Back
+            Blend SrcAlpha OneMinusSrcAlpha
+
+        HLSLPROGRAM
+            //target 3.0：frag 用了显式LOD的 SAMPLE_TEXTURECUBE_LOD 与场景深度/颜色采样
+            #pragma target 3.0
+
+            // -------------------------------------
+            // Unity defined keywords
+            //水面 frag 不采样光照贴图/GI、无 DEBUG_DISPLAY 分支，故只保留雾
+            #pragma multi_compile_fog
+
+            //顶点/片元着色器
+            #pragma vertex vert
+            #pragma fragment frag
+
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareDepthTexture.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/DeclareOpaqueTexture.hlsl"
+            #include "Function.hlsl"
+            #include "WaterPlaneMain.hlsl"
+        ENDHLSL
+        }
+    }
+
+    //自定义Shader编辑器面板
+    CustomEditor "AleToonURP.ShaderGUI.ShaderGUIWaterPlane"
+}
