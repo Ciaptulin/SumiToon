@@ -4,6 +4,15 @@
 
 ## [Unreleased]
 
+### Added
+
+- **UPM 包化**：代码迁移到 `Packages/com.sumitoon.urp/`，包含 `package.json`、包内 CHANGELOG/README、`Samples~/Demo`、`Documentation~`
+- **程序集规范化**：`FsURPPostProcessing` → `SumiToon.PostProcessing`、`AleToonURP.Editor` → `SumiToon.Editor`，全部统一 `SumiToon.*` 前缀
+- **CI**：`.github/workflows/ci.yml`（路径残留、JSON、asmdef 命名、Shader 文件头、大文件 LFS 检查）
+- **测试**：`Tests/EditMode/` 校验 Shader Properties 与 CBUFFER 一致性、命名规范
+- 17 个后处理 Shader/HLSL 补齐文件头
+- `Assets/ProductAssets/SharedResources/` 收纳被正式资产引用的示例贴图（保留 GUID）
+
 ### Fixed
 
 **AlePostProcessingURP 运行时问题（代码审查后修复）**
@@ -28,13 +37,13 @@
 - `BtnToggleLabelPass`：空材质数组时提前 `return` 漏掉 `EndHorizontal`，导致布局错乱
 - 折叠面板状态字典用标题作 Key，不同 Shader 的面板共享展开状态。增加 Shader 名前缀隔离
 
-### Added
+### Docs
 
 - `docs/GETTING_STARTED.md`：新手入门（10 分钟从 clone 到看到效果，含 5 项验证清单）
 - `docs/ARCHITECTURE.md`：架构与代码阅读指南（目录职责、Shader 文件关系、LitMain 阅读路线、数据流）
 - `docs/TROUBLESHOOTING.md`：常见问题（9 类现象：材质粉红、场景黑、白模、描边、后处理、Game 视图发糊、乱码、占位符）
 - `docs/CONTRIBUTING.md`：贡献指南（提交规范、代码规范、变体管理、Git 流程）
-- `Document~/UserManual.md`：从 AleToonURP 原项目搬入的用户手册（含 30+ 张参数截图）
+- `Packages/com.sumitoon.urp/Documentation~/UserManual.md`：从 AleToonURP 原项目搬入的用户手册（含 30+ 张参数截图）
 - `Learning/notes/`：学习笔记（Shader 代码规范、AleToonURP 代码审查报告、面试复习手册）
 - README 增加"文档索引"章节
 
@@ -49,6 +58,14 @@
 - 引入 URPSettings 管线配置与 Volume
 - 建立 `Learning/` 学习记录目录，保存手敲的 4 个核心 HLSL
 - 建立 Git 仓库，配置 LFS / .gitignore / .gitattributes / .editorconfig
+
+### Changed
+
+- **包内 include 路径**：15 个后处理 Shader 从 `Assets/PluginsDeveloper/...` 改为相对路径 `../ShaderLibrary/Core.hlsl`（UPM 安装后物理路径变化，硬编码会失效）
+- **命名空间**：`AlePostProcessUPR` → `AlePostProcessURP`（20 个文件，35 处引用）
+- **依赖锁定**：`com.alefeng.outlinesmoothnormalsgenerator` 从无版本 git URL 锁定到 `#1.8.1`
+
+## [0.1.0] - 2026-11-02
 
 ### Changed
 

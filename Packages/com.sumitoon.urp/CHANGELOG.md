@@ -4,6 +4,11 @@
 
 ## [Unreleased]
 
+### Added
+
+- GitHub Actions CI：路径残留检测、JSON 校验、asmdef 命名规范、Shader 文件头检查、大文件 LFS 检查
+- EditMode 测试：Shader Properties 与 CBUFFER 一致性、命名规范校验
+
 ## [0.1.0] - 2026-11-02
 
 ### Added

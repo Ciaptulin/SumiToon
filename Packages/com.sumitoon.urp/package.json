@@ -25,6 +25,9 @@
     "com.unity.render-pipelines.universal": "16.0.6",
     "com.alefeng.outlinesmoothnormalsgenerator": "1.8.1"
   },
+  "testables": [
+    "SumiToon.Tests.EditMode"
+  ],
   "samples": [
     {
       "displayName": "Demo",
