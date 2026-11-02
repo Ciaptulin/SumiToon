@@ -33,6 +33,6 @@ namespace SumiToon
         /// <summary>
         /// 项目主页（可选，用于 About 面板）。
         /// </summary>
-        public const string ProjectUrl = "https://github.com/<your-username>/SumiToon";
+        public const string ProjectUrl = "https://github.com/Ciaptulin/SumiToon";
     }
 }
