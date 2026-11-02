@@ -1,10 +1,17 @@
-﻿Shader "Hidden/Custom/DistortRipple" 
+// ============================================================
+// 文件：DistortRipple.shader
+// 用途：扭曲波纹后处理：噪声 UV 偏移 + 多点涟漪
+// 依赖：URP Core.hlsl；AlePostProcessingURP/ShaderLibrary/Core.hlsl
+// 作者：AleFeng（原作者）    最后修改：2026-11-02
+// 许可：MIT
+// ============================================================
+Shader "Hidden/Custom/DistortRipple" 
 {
 HLSLINCLUDE
     // This file contains the "Luminance" which we use to get the grayscale value
     #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
     #include "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/Common.hlsl"
-    #include "Assets/PluginsDeveloper/AlePostProcessingURP/ShaderLibrary/Core.hlsl"
+    #include "../ShaderLibrary/Core.hlsl"
 
     TEXTURE2D_X(_MainTex);
     float4 _MainTex_ST;

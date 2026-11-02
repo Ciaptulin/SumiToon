@@ -1,3 +1,10 @@
+// ============================================================
+// 文件：Core.hlsl
+// 用途：后处理通用工具：全屏三角形顶点、_ScreenSize、采样辅助
+// 依赖：URP Core.hlsl
+// 作者：AleFeng（原作者）    最后修改：2026-11-02
+// 许可：MIT
+// ============================================================
 #ifndef YETMAN_POSTPROCESS_CORE_INCLUDED
 #define YETMAN_POSTPROCESS_CORE_INCLUDED
 

@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  validate:
+    name: 仓库健康检查
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+        with:
+          lfs: false
+
+      - name: 检查旧路径残留
+        run: |
+          echo "检查是否有引用已废弃的 Assets/PluginsDeveloper 路径..."
+          if grep -rn "Assets/PluginsDeveloper" --include="*.md" --include="*.json" --include="*.cs" . ; then
+            echo "::error::发现已废弃的路径引用 Assets/PluginsDeveloper，请改为 Packages/com.sumitoon.urp"
+            exit 1
+          fi
+          echo "通过"
+
+      - name: 校验 JSON 文件
+        run: |
+          echo "校验 package.json / manifest.json 格式..."
+          for f in Packages/com.sumitoon.urp/package.json Packages/manifest.json Packages/packages-lock.json; do
+            if [ -f "$f" ]; then
+              python3 -m json.tool "$f" > /dev/null || { echo "::error::$f 不是合法 JSON"; exit 1; }
+              echo "OK: $f"
+            fi
+          done
+
+      - name: 检查 asmdef 命名规范
+        run: |
+          echo "检查 asmdef 是否统一 SumiToon.* 前缀..."
+          fail=0
+          while IFS= read -r f; do
+            name=$(python3 -c "import json,sys; print(json.load(open(sys.argv[1]))['name'])" "$f")
+            case "$name" in
+              SumiToon.*) echo "OK: $name" ;;
+              *) echo "::error::程序集 $name 不符合 SumiToon.* 命名规范 ($f)"; fail=1 ;;
+            esac
+          done < <(find Packages/com.sumitoon.urp -name "*.asmdef")
+          exit $fail
+
+      - name: 检查 Shader 文件头
+        run: |
+          echo "检查 .shader / .hlsl 是否有文件头..."
+          fail=0
+          while IFS= read -r f; do
+            if ! head -n 12 "$f" | grep -q "文件："; then
+              echo "::error::$f 缺少文件头（文件：/ 用途：/ 依赖：）"
+              fail=1
+            fi
+          done < <(find Packages/com.sumitoon.urp -name "*.shader" -o -name "*.hlsl")
+          exit $fail
+
+      - name: 检查大型二进制是否误提交
+        run: |
+          echo "检查是否有 > 50MB 的非 LFS 文件..."
+          fail=0
+          while IFS= read -r f; do
+            size=$(stat -c%s "$f" 2>/dev/null || echo 0)
+            if [ "$size" -gt 52428800 ]; then
+              attr=$(git check-attr filter -- "$f" | awk '{print $NF}')
+              if [ "$attr" != "lfs" ]; then
+                echo "::error::$f 大小 $((size/1024/1024))MB 且未走 LFS"
+                fail=1
+              fi
+            fi
+          done < <(git ls-files)
+          exit $fail

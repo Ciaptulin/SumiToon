@@ -1,3 +1,10 @@
+// ============================================================
+// 文件：DeclareTransparentDepthTexture.hlsl
+// 用途：声明 _CameraTransparentDepthTexture 供水面 Shader 采样
+// 依赖：URP Core.hlsl
+// 作者：AleFeng（原作者）    最后修改：2026-11-02
+// 许可：MIT
+// ============================================================
 #ifndef YETMAN_POSTPROCESS_TRANSPARENT_DECLARE_DEPTH_TEXTURE_INCLUDED
 #define YETMAN_POSTPROCESS_TRANSPARENT_DECLARE_DEPTH_TEXTURE_INCLUDED
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"

@@ -1,10 +1,17 @@
-﻿Shader "Hidden/Custom/GaussianBlur"
+// ============================================================
+// 文件：GaussianBlur.shader
+// 用途：高斯模糊后处理：可迭代的横纵分离模糊
+// 依赖：URP Core.hlsl；AlePostProcessingURP/ShaderLibrary/Core.hlsl
+// 作者：AleFeng（原作者）    最后修改：2026-11-02
+// 许可：MIT
+// ============================================================
+Shader "Hidden/Custom/GaussianBlur"
 {
 HLSLINCLUDE
     // This file contains the "Luminance" which we use to get the grayscale value
     #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
     #include "Packages/com.unity.render-pipelines.universal/Shaders/PostProcessing/Common.hlsl"
-	#include "Assets/PluginsDeveloper/AlePostProcessingURP/ShaderLibrary/Core.hlsl"
+	#include "../ShaderLibrary/Core.hlsl"
 
 	TEXTURE2D_X(_MainTex);
 	float4 _MainTex_TexelSize;
