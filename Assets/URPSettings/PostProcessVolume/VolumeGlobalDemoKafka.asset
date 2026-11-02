@@ -298,7 +298,7 @@ MonoBehaviour:
   m_Enable:
     m_OverrideState: 0
     m_Value: 0
-  blend:
+  m_Blend:
     m_OverrideState: 1
     m_Value: 0.5
 --- !u!114 &-3096370544337336859
@@ -819,7 +819,7 @@ MonoBehaviour:
   m_Enable:
     m_OverrideState: 1
     m_Value: 1
-  blend:
+  m_Blend:
     m_OverrideState: 1
     m_Value: 0.5
 --- !u!114 &4414080793998481470
