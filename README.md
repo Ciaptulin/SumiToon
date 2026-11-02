@@ -46,7 +46,7 @@
 ## 安装
 
 ```bash
-git clone https://github.com/SumiToon/SumiToon.git
+git clone https://github.com/Ciaptulin/SumiToon.git
 cd SumiToon
 git lfs install
 git lfs pull

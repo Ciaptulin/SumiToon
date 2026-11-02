@@ -9,7 +9,7 @@
 Package Manager → **+** → **Add package from git URL**：
 
 ```
-https://github.com/SumiToon/SumiToon.git?path=/Packages/com.sumitoon.urp#v0.1.0
+https://github.com/Ciaptulin/SumiToon.git?path=/Packages/com.sumitoon.urp#v0.1.0
 ```
 
 ### 方式二：本地路径

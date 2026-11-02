@@ -5,9 +5,9 @@
   "description": "基于 AleToonURP 的 Unity URP NPR（二次元卡通）渲染管线。包含三色阶明暗、外描边、边缘光、高光、自发光、MatCap、NPR 水面，以及一组可叠加的自定义后处理（模糊、故障、波纹、边缘遮罩等）。",
   "unity": "2023.2",
   "unityRelease": "20f1",
-  "documentationUrl": "https://github.com/SumiToon/SumiToon/blob/master/Packages/com.sumitoon.urp/Documentation~/UserManual.md",
-  "changelogUrl": "https://github.com/SumiToon/SumiToon/blob/master/Packages/com.sumitoon.urp/CHANGELOG.md",
-  "licensesUrl": "https://github.com/SumiToon/SumiToon/blob/master/LICENSE",
+  "documentationUrl": "https://github.com/Ciaptulin/SumiToon/blob/master/Packages/com.sumitoon.urp/Documentation~/UserManual.md",
+  "changelogUrl": "https://github.com/Ciaptulin/SumiToon/blob/master/Packages/com.sumitoon.urp/CHANGELOG.md",
+  "licensesUrl": "https://github.com/Ciaptulin/SumiToon/blob/master/LICENSE",
   "keywords": [
     "toon",
     "npr",
