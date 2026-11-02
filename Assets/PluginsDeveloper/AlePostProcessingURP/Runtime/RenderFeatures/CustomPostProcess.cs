@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-namespace AlePostProcessUPR
+namespace AlePostProcessURP
 {
     /// <summary>
     /// 自定义后处理 RF
@@ -380,12 +380,13 @@ namespace AlePostProcessUPR
                 }
             } 
 
+            //释放所有临时RT（必须在 ExecuteCommandBuffer 之前，
+            //否则命令写入已回收的 cmd，ReleaseTemporaryRT 永远不会执行，导致显存泄漏）
+            ReleaseAllTempRenderTexture(cmd);
+
             //执行CommandBuffer 并释放
             context.ExecuteCommandBuffer(cmd);
             CommandBufferPool.Release(cmd);
-
-            //释放所有临时RT
-            ReleaseAllTempRenderTexture(cmd);
         }
     }
 }

@@ -15,7 +15,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Experimental.Rendering;
 
-namespace AlePostProcessUPR
+namespace AlePostProcessURP
 {
     /// <summary>
     /// 渲染透明物体深度到 _CameraTransparentDepthTexture，供水面 Shader 采样。
@@ -103,11 +103,9 @@ namespace AlePostProcessUPR
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
             CommandBuffer cmd = CommandBufferPool.Get(m_ProfilerTag);
+
             using (new ProfilingScope(cmd, m_ProfilingSampler))
             {
-                context.ExecuteCommandBuffer(cmd);
-                cmd.Clear();
-
                 var sortFlags = renderingData.cameraData.defaultOpaqueSortFlags;
                 var drawSettings = CreateDrawingSettings(m_ShaderTagId, ref renderingData, sortFlags);
                 drawSettings.perObjectData = PerObjectData.None;
@@ -116,8 +114,12 @@ namespace AlePostProcessUPR
                 Camera camera = cameraData.camera;
                 m_FilteringSettings.layerMask = camera.cullingMask;
 
-                context.DrawRenderers(renderingData.cullResults, ref drawSettings, ref m_FilteringSettings);
+                // URP 16：DrawRenderers 已过时，改用 RendererList API
+                var rendererListParams = new RendererListParams(renderingData.cullResults, drawSettings, m_FilteringSettings);
+                var rendererList = context.CreateRendererList(ref rendererListParams);
+                cmd.DrawRendererList(rendererList);
             }
+
             context.ExecuteCommandBuffer(cmd);
             CommandBufferPool.Release(cmd);
         }

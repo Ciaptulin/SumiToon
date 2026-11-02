@@ -13,8 +13,9 @@
 | 模型是白模 / 灰色 | 材质引用断裂 | [3](#3-模型白模) |
 | 描边没了 / 描边错乱 | 平滑法线包没装 / 法线与烘焙不一致 | [4](#4-描边问题) |
 | 后处理效果消失 | AlePostProcessingURP 编译失败 | [5](#5-后处理失效) |
-| 中文注释乱码 | 文件编码不是 UTF-8 | [6](#6-中文乱码) |
-| 拉取项目后资产是占位符 | LFS 没拉 | [7](#7-资产占位符) |
+| Game 视图整体发糊 / 发虚 | 景深或后处理被意外启用 | [6](#6-game-视图整体发糊) |
+| 中文注释乱码 | 文件编码不是 UTF-8 | [7](#7-中文乱码) |
+| 拉取项目后资产是占位符 | LFS 没拉 | [8](#8-资产占位符) |
 | Console 报 \`OSN_GetSmoothNormalOS\` 未定义 | OutlineSmoothNormalsGenerator 没装 | [4](#4-描边问题) |
 
 ---
@@ -111,7 +112,52 @@
 
 ---
 
-## 6. 中文乱码
+## 6. Game 视图整体发糊
+
+**现象：** Scene 视图清晰，但 Game 视图（含 Play 模式）整个画面发虚、像隔了层毛玻璃。
+Game 视图的 Scale、分辨率、Low Resolution Aspect Ratios 都确认正常。
+
+**为什么难查：** 这类问题不是分辨率或抗锯齿造成的，而是**某个后处理在整屏生效**。
+Volume 里的效果数量多、参数嵌套深，逐个关很容易漏。
+
+**快速诊断（推荐，1 分钟定位）：**
+
+1. `Window → Analysis → Frame Debugger`，点左上角 **Enable**
+2. 左侧是渲染事件列表，**从上往下逐个点击**
+3. 观察右侧预览：**找到画面从清晰变模糊的那一步**
+4. 看该步的 `Details → RenderTarget` 尺寸
+
+典型特征：
+- 尺寸变成 `960x540`、`480x270`（半分辨率/四分之一分辨率）→ 某个模糊类后处理在生效
+- 事件名含 `DepthOfField` / `Blur` / `Bloom` / `Mosaic` → 直接对应效果
+
+**已知原因和修复：**
+
+| Frame Debugger 中的事件名 | 原因 | 修复 |
+|---|---|---|
+| `GaussianDepthOfField` | 景深被启用，且清晰区间（gaussianStart~End）很窄 | Volume 里关掉 DepthOfField 的 Active，或调大 gaussianStart / 调小 gaussianMaxRadius |
+| `Bloom`（threshold 很低） | 阈值过低导致整屏泛光 | 关掉 Bloom 或把 threshold 调高到 0.9+ |
+| `CyberFaultEffect` 等自定义效果 | 自定义后处理的 Enable 开关被打开 | 见下方「自定义后处理开关的坑」 |
+
+**自定义后处理开关的坑：**
+
+AlePostProcessingURP 的自定义效果，真正生效的开关是 **`Enable` 参数的 overrideState**，
+而不是 Inspector 顶部的 `Active` 勾选框（`VolumeComponent.active` 在 URP 里有已知 Bug，始终为 true）。
+
+判断方法：打开 Volume Profile，找到该效果：
+- `Enable` 行的**复选框被勾上** → 已启用（不管 `Active` 是什么）
+- 要关闭：取消 `Enable` 行的勾选，或把其值设为 0
+
+**如果 Frame Debugger 显示所有 Pass 都正常，画面仍糊：**
+
+清缓存后重新导入（搬移项目后最常见）：
+1. 关闭 Unity
+2. 删除 `Library/ShaderCache`、`Library/BurstCache`、`Library/ScriptAssemblies`
+3. 重新打开 Unity，等待 Shader 全量重编译（3~5 分钟）
+
+---
+
+## 7. 中文乱码
 
 **现象：** 打开 \`.hlsl\` / \`.cs\` 文件，中文注释变成 \`閫氱敤宸ュ叿\` 这种乱码。
 
@@ -130,7 +176,7 @@
 
 ---
 
-## 7. 资产占位符
+## 8. 资产占位符
 
 **现象：** 克隆后模型、贴图全是灰色占位符，文件大小是几百字节。
 
@@ -147,7 +193,7 @@ git lfs pull
 
 ---
 
-## 8. 还是解决不了
+## 9. 还是解决不了
 
 1. 收集信息：
    - Unity 版本（\`Help → About Unity\`）

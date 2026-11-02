@@ -518,9 +518,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b87f8b1c21e728744a3c0a5a074fe3a4, type: 3}
   m_Name: CyberFaultEffect
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   Enable:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0
   m_MainTexOffestIntensity:
     m_OverrideState: 1
@@ -650,6 +650,7 @@ MonoBehaviour:
   - {fileID: -2132424123133276081}
   - {fileID: 894229555811171453}
   - {fileID: -4274492270361141401}
+  - {fileID: 8133137525524921362}
 --- !u!114 &894229555811171453
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -691,6 +692,30 @@ MonoBehaviour:
   mode:
     m_OverrideState: 1
     m_Value: 0
+  neutralHDRRangeReductionMode:
+    m_OverrideState: 0
+    m_Value: 2
+  acesPreset:
+    m_OverrideState: 0
+    m_Value: 3
+  hueShiftAmount:
+    m_OverrideState: 0
+    m_Value: 0
+  detectPaperWhite:
+    m_OverrideState: 0
+    m_Value: 0
+  paperWhite:
+    m_OverrideState: 0
+    m_Value: 300
+  detectBrightnessLimits:
+    m_OverrideState: 0
+    m_Value: 1
+  minNits:
+    m_OverrideState: 0
+    m_Value: 0.005
+  maxNits:
+    m_OverrideState: 0
+    m_Value: 1000
 --- !u!114 &1991064074288609455
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -743,7 +768,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2db86121404754db890f4c8dfe81b2, type: 3}
   m_Name: Bloom
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
+  skipIterations:
+    m_OverrideState: 1
+    m_Value: 4
   threshold:
     m_OverrideState: 1
     m_Value: 0.1
@@ -762,9 +790,12 @@ MonoBehaviour:
   highQualityFiltering:
     m_OverrideState: 0
     m_Value: 1
-  skipIterations:
-    m_OverrideState: 1
-    m_Value: 4
+  downscale:
+    m_OverrideState: 0
+    m_Value: 0
+  maxIterations:
+    m_OverrideState: 0
+    m_Value: 6
   dirtTexture:
     m_OverrideState: 0
     m_Value: {fileID: 0}
@@ -834,7 +865,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c01700fd266d6914ababb731e09af2eb, type: 3}
   m_Name: DepthOfField
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   mode:
     m_OverrideState: 1
     m_Value: 1
@@ -949,6 +980,25 @@ MonoBehaviour:
   m_EdgeColor:
     m_OverrideState: 0
     m_Value: {r: 0, g: 0, b: 0, a: 1}
+--- !u!114 &8133137525524921362
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7417054cc3a30b448091a3c5d9f64bc, type: 3}
+  m_Name: GrayscaleAbleEffect
+  m_EditorClassIdentifier: 
+  active: 1
+  Enable:
+    m_OverrideState: 1
+    m_Value: 0
+  m_Blend:
+    m_OverrideState: 0
+    m_Value: 0.5
 --- !u!114 &8473011654159589489
 MonoBehaviour:
   m_ObjectHideFlags: 3

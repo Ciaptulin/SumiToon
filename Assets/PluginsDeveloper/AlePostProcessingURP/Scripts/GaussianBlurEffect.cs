@@ -1,10 +1,9 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-using AlePostProcessUPR;
-using static Unity.VisualScripting.Member;
+using AlePostProcessURP;
 
-namespace AlePostProcessUPR
+namespace AlePostProcessURP
 {
 	[System.Serializable, VolumeComponentMenu("Able/GaussianBlur")]
 	public class GaussianBlurEffect : CustomVolumeComponent
@@ -38,31 +37,33 @@ namespace AlePostProcessUPR
 
             var volume = GetVolumeComponent<GaussianBlurEffect>();
 
-            //��ȡRT
-            int RTWidth = (int)(Screen.width / 4f);
-            int RTHeight = (int)(Screen.height / 4f);
+            //获取RT：用相机渲染目标尺寸而非 Screen.width，
+            //否则 Scene 视图 / 多相机 / 改 renderScale 时尺寸与实际渲染不一致
+            var descriptor = renderingData.cameraData.cameraTargetDescriptor;
+            int RTWidth = descriptor.width / 4;
+            int RTHeight = descriptor.height / 4;
             cmd.GetTemporaryRT(ShaderIDs.BufferRT1, RTWidth, RTHeight, 0, FilterMode.Bilinear);
             cmd.GetTemporaryRT(ShaderIDs.BufferRT2, RTWidth, RTHeight, 0, FilterMode.Bilinear);
 
-            //����������
+            //降采样复制
             cmd.Blit(src, ShaderIDs.BufferRT1);
 
             for (int i = 0; i < volume.Iteration.value; i++)
             {
-                //ˮƽģ��
-                cmd.SetGlobalVector(ShaderIDs.BlurRadius, new Vector4(volume.BlurRadius.value / Screen.width, 0, 0, 0));
+                //水平模糊
+                cmd.SetGlobalVector(ShaderIDs.BlurRadius, new Vector4(volume.BlurRadius.value / descriptor.width, 0, 0, 0));
                 cmd.SetGlobalTexture(ShaderIDs.Input, ShaderIDs.BufferRT1);
                 CoreUtils.DrawFullScreen(cmd, m_PostProcessMaterial, ShaderIDs.BufferRT2);
 
-                //��ֱģ��
-                cmd.SetGlobalVector(ShaderIDs.BlurRadius, new Vector4(0, volume.BlurRadius.value / Screen.height, 0, 0));
+                //垂直模糊
+                cmd.SetGlobalVector(ShaderIDs.BlurRadius, new Vector4(0, volume.BlurRadius.value / descriptor.height, 0, 0));
                 cmd.SetGlobalTexture(ShaderIDs.Input, ShaderIDs.BufferRT2);
                 CoreUtils.DrawFullScreen(cmd, m_PostProcessMaterial, ShaderIDs.BufferRT1);
             }
 
             DrawFullScreen(1, ShaderIDs.BufferRT1);
 
-            //�ͷ�RT
+            //释放RT
             cmd.ReleaseTemporaryRT(ShaderIDs.BufferRT1);
             cmd.ReleaseTemporaryRT(ShaderIDs.BufferRT2);
         }

@@ -1,10 +1,9 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-using AlePostProcessUPR;
-using static Unity.VisualScripting.Member;
+using AlePostProcessURP;
 
-namespace AlePostProcessUPR
+namespace AlePostProcessURP
 {
 	[System.Serializable, VolumeComponentMenu("Able/ImageDizzy")]
 	public class ImageDizzyEffect : CustomVolumeComponent

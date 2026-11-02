@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
@@ -67,12 +64,18 @@ public class AleCameraRover : MonoBehaviour
     }
 
     #region 光标设置
+    //上一次写入的光标状态，用于避免每帧重复写（会与场景中其它控制光标的系统冲突）
+    private bool? m_CursorVisibleLast;
+
     /// <summary>
     /// 设置 光标 可见锁定状态
     /// </summary>
     /// <param name="isVisible"></param>
     private void SetCursorVisibleUnLock(bool isVisible)
     {
+        if (m_CursorVisibleLast == isVisible) return;
+        m_CursorVisibleLast = isVisible;
+
         Cursor.visible = isVisible;
         Cursor.lockState = isVisible ? CursorLockMode.None : CursorLockMode.Locked;
     }
@@ -216,9 +219,6 @@ public class AleCameraRover : MonoBehaviour
 
         //执行移动
         TransformGet.position += CalculateMoveSpeed(moveDirect != Vector3.zero, moveSpeed, moveDirect);
-
-        //调整移动速度 TODO
-        float speedChange = Input.mouseScrollDelta.y * Time.deltaTime;
     }
 
     private Vector3 m_MoveSpeedDirCur; //当前 移动速度方向
@@ -276,19 +276,13 @@ public class AleCameraRover : MonoBehaviour
     /// </summary>
     private void UpdateRotate()
     {
-        //垂直角度
-        TransformGet.rotation *= Quaternion.AngleAxis
-        (
-            -Input.GetAxis("Mouse Y") * m_RotateSpeed,
-            Vector3.right
-        );
-        //水平角度
-        TransformGet.rotation = Quaternion.Euler
-        (
-            TransformGet.eulerAngles.x,
-            TransformGet.eulerAngles.y + Input.GetAxis("Mouse X") * m_RotateSpeed,
-            TransformGet.eulerAngles.z
-        );
+        //水平：绕世界 Y 轴旋转；垂直：绕自身 X 轴旋转。
+        //用 Quaternion 累积而非读写 eulerAngles，避免俯仰接近 ±90° 时出现角度跳变。
+        float yaw = Input.GetAxis("Mouse X") * m_RotateSpeed;
+        float pitch = -Input.GetAxis("Mouse Y") * m_RotateSpeed;
+
+        TransformGet.Rotate(Vector3.up, yaw, Space.World);
+        TransformGet.Rotate(Vector3.right, pitch, Space.Self);
     }
     #endregion
 

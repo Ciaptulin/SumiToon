@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-using AlePostProcessUPR;
+using AlePostProcessURP;
 
-namespace AlePostProcessUPR
+namespace AlePostProcessURP
 {
 	[System.Serializable, VolumeComponentMenu("Able/ImageWaggle")]
 	public class ImageWaggleEffect : CustomVolumeComponent

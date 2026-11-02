@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-namespace AlePostProcessUPR
+namespace AlePostProcessURP
 {
     /// <summary>
     /// Custom Post Processing injection points.
@@ -87,17 +87,28 @@ namespace AlePostProcessUPR
         protected Type m_VolumeComponentType = null;
 
         /// <summary>
-        /// 初始化 后处理容器
+        /// 初始化 后处理容器（泛型版本，供子类在 Render 中调用）
         /// </summary>
         /// <typeparam name="T">后处理容器组件 实例</typeparam>
         /// <returns></returns>
         protected T InitVolumeComponent<T>() where T : CustomVolumeComponent
         {
-            m_VolumeComponent = VolumeManager.instance.stack.GetComponent<T>();
-            //获取 后处理容器 组件
             m_VolumeComponentType = typeof(T);
+            return InitVolumeComponentByType(m_VolumeComponentType) as T;
+        }
 
-            return m_VolumeComponent as T;
+        /// <summary>
+        /// 按类型初始化 后处理容器（非泛型版本，供 Setup 在没有 T 上下文时调用）
+        /// </summary>
+        /// <param name="type">VolumeComponent 子类型</param>
+        /// <returns>组件实例，类型不合法时为 null</returns>
+        private CustomVolumeComponent InitVolumeComponentByType(Type type)
+        {
+            if (type == null) return null;
+
+            // GetComponent(Type) 返回 VolumeComponent 基类，需显式转换到 CustomVolumeComponent
+            m_VolumeComponent = VolumeManager.instance.stack.GetComponent(type) as CustomVolumeComponent;
+            return m_VolumeComponent;
         }
 
         /// <summary>
@@ -107,7 +118,9 @@ namespace AlePostProcessUPR
         /// <returns></returns>
         protected T GetVolumeComponent<T>() where T : CustomVolumeComponent
         {
-            if (m_VolumeComponent == null)
+            //类型不符时也重新获取：m_VolumeComponent 只缓存一次，
+            //若首帧拿到别的类型（多 Volume 叠加 / ShareInstance 复用），as T 会静默返回 null
+            if (m_VolumeComponent is not T)
                 InitVolumeComponent<T>();
 
             return m_VolumeComponent as T;
@@ -140,9 +153,18 @@ namespace AlePostProcessUPR
         /// <returns>是否 装载</returns>
         public virtual bool Setup(ref RenderingData renderingData, CustomPostProcessInsertPoint insertPoint)
         {
-            //VolumeComponent.active 有Bug始终为true
-            //使用Enable的overrideState作为Volume的激活状态
-            return m_PostProcessMaterial != null && m_VolumeComponent != null && m_VolumeComponent.Enable.overrideState;
+            if (m_PostProcessMaterial == null) return false;
+
+            // m_VolumeComponent 可能在 Setup 阶段尚未初始化（初始化发生在 GetVolumeComponent），
+            // 这里主动获取一次，避免首帧漏渲染
+            if (m_VolumeComponent == null)
+                InitVolumeComponentByType(m_VolumeComponentType);
+
+            if (m_VolumeComponent == null) return false;
+
+            // VolumeComponent.active 有 Bug 始终为 true，改用 Enable 参数判断：
+            // overrideState 表示该参数是否被 Volume 覆盖，value 才是用户的实际开关
+            return m_VolumeComponent.Enable.overrideState && m_VolumeComponent.Enable.value;
         }
         #endregion
 

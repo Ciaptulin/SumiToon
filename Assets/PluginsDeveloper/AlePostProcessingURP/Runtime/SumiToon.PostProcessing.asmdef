@@ -1,13 +1,11 @@
 {
-    "name": "AleToonURP.Editor",
-    "rootNamespace": "AleToonURP",
+    "name": "SumiToon.PostProcessing",
+    "rootNamespace": "AlePostProcessURP",
     "references": [
         "Unity.RenderPipelines.Universal.Runtime",
-        "SumiToon.Runtime"
+        "Unity.RenderPipelines.Core.Runtime"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

@@ -83,18 +83,17 @@ namespace AleToonURP.ShaderGUI
 
         private static void OnBtnToggle(MaterialProperty matProp)
         {
-            if (matProp.floatValue == 0)
+            //用 try/finally 保证 GUI.color 复原：按钮绘制过程中若抛异常，
+            //未复原的 GUI.color 会污染后续所有控件
+            bool isOn = matProp.floatValue != 0;
+            GUI.color = isOn ? ColorON : ColorOFF;
+            try
             {
-                GUI.color = ColorOFF;
-                if (GUILayout.Button("关", LayoutBtnSmall))
-                    matProp.floatValue = 1f;
-                GUI.color = ColorDefault;
+                if (GUILayout.Button(isOn ? "开" : "关", LayoutBtnSmall))
+                    matProp.floatValue = isOn ? 0f : 1f;
             }
-            else
+            finally
             {
-                GUI.color = ColorON;
-                if (GUILayout.Button("开", LayoutBtnSmall))
-                    matProp.floatValue = 0f;
                 GUI.color = ColorDefault;
             }
         }
@@ -106,23 +105,24 @@ namespace AleToonURP.ShaderGUI
         /// <param name="shaderPassName">shader Pass名称</param>
         public static void BtnToggleLabelPass(GUIContent label, Material[] materials, string shaderPassName)
         {
+            //状态取首个材质用于显示；点击时开关写入全部选中材质
+            //提前返回必须在 BeginHorizontal 之前，否则会漏掉 EndHorizontal 导致布局错乱
+            if (materials == null || materials.Length == 0) return;
+
             EditorGUILayout.BeginHorizontal();
 
             EditorGUILayout.PrefixLabel(label);
 
-            //状态取首个材质用于显示；点击时开关写入全部选中材质
-            if (materials[0].GetShaderPassEnabled(shaderPassName))
+            bool isOn = materials[0].GetShaderPassEnabled(shaderPassName);
+            GUI.color = isOn ? ColorON : ColorOFF;
+            try
             {
-                GUI.color = ColorON;
-                if (GUILayout.Button("开", LayoutBtnSmall))
-                    foreach (var m in materials) m.SetShaderPassEnabled(shaderPassName, false);
-                GUI.color = ColorDefault;
+                if (GUILayout.Button(isOn ? "开" : "关", LayoutBtnSmall))
+                    foreach (var m in materials)
+                        if (m != null) m.SetShaderPassEnabled(shaderPassName, !isOn);
             }
-            else
+            finally
             {
-                GUI.color = ColorOFF;
-                if (GUILayout.Button("关", LayoutBtnSmall))
-                    foreach (var m in materials) m.SetShaderPassEnabled(shaderPassName, true);
                 GUI.color = ColorDefault;
             }
 
@@ -190,6 +190,17 @@ namespace AleToonURP.ShaderGUI
         //折叠面板的打开状态
         private static Dictionary<string, bool> m_DicFoldoutIsOpen = new Dictionary<string, bool>();
 
+        //折叠面板状态 Key 的前缀（当前正在绘制的 Shader 名），避免不同 Shader 面板共享展开状态
+        private static string m_FoldoutKeyPrefix = string.Empty;
+
+        /// <summary>
+        /// 设置折叠面板状态 Key 前缀。由 ShaderGUIBase 在每帧绘制前调用。
+        /// </summary>
+        public static void SetFoldoutKeyPrefix(string prefix)
+        {
+            m_FoldoutKeyPrefix = string.IsNullOrEmpty(prefix) ? string.Empty : prefix + "|";
+        }
+
         //折叠面板样式缓存（避免每帧重复构造 GUIStyle/RectOffset，减少编辑器GC）
         private static GUIStyle m_FoldoutStyleMain;
         private static GUIStyle m_FoldoutStyleSub;
@@ -236,6 +247,8 @@ namespace AleToonURP.ShaderGUI
         /// <param name="styleType"></param>
         public static void FoldoutPanel(string title, System.Action panelGUI, EFoldoutStyleType styleType = EFoldoutStyleType.Main)
         {
+            //标题相同的面板在不同 Shader 的面板里会撞 Key，加上当前 Shader 名做前缀隔离
+            string key = m_FoldoutKeyPrefix + title;
             var style = GetFoldoutStyle(styleType);
             float toggleRectXoffset = (styleType == EFoldoutStyleType.Sub) ? 16f : 4f;
 
@@ -244,8 +257,8 @@ namespace AleToonURP.ShaderGUI
 
             //当前面板的打开状态
             bool isOpen = false;
-            if (!m_DicFoldoutIsOpen.TryGetValue(title, out isOpen))
-                m_DicFoldoutIsOpen.Add(title, isOpen);
+            if (!m_DicFoldoutIsOpen.TryGetValue(key, out isOpen))
+                m_DicFoldoutIsOpen.Add(key, isOpen);
 
             //当前事件处理
             var e = Event.current;
@@ -256,7 +269,7 @@ namespace AleToonURP.ShaderGUI
             }
             if (e.type == EventType.MouseDown && rect.Contains(e.mousePosition))
             {
-                m_DicFoldoutIsOpen[title] = !isOpen;
+                m_DicFoldoutIsOpen[key] = !isOpen;
                 e.Use();
             }
 

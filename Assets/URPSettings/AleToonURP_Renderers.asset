@@ -31,8 +31,7 @@ MonoBehaviour:
       type: 3}
     probeSamplingDebugTexture: {fileID: 2800000, guid: 24ec0e140fb444a44ab96ee80844e18e,
       type: 3}
-  m_RendererFeatures:
-  - {fileID: 0}
+  m_RendererFeatures: []
   m_RendererFeatureMap: 6b0e2b396c8a5832
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
@@ -93,5 +92,5 @@ MonoBehaviour:
     m_RenderersAfterOpaqueAndSky: []
     m_RenderersBeforePostProcess: []
     m_RenderersAfterPostProcess:
-    - AlePostProcessUPR.CyberFaultEffectRenderer, FsURPPostProcessing, Version=0.0.0.0,
+    - AlePostProcessURP.CyberFaultEffectRenderer, SumiToon.PostProcessing, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null

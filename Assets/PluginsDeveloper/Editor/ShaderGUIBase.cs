@@ -25,6 +25,10 @@ namespace AleToonURP.ShaderGUI
             m_Materials = System.Array.ConvertAll(materialEditor.targets, o => (Material)o);
             InitMatProperty(props);
 
+            //折叠面板状态按 Shader 隔离，避免 Lit / WaterPlane 面板互相影响展开状态
+            //必须在 m_Material 赋值之后，否则拿不到 Shader 名
+            ShaderGUIExtension.SetFoldoutKeyPrefix(m_Material != null ? m_Material.shader.name : null);
+
             //信息改动检查
             EditorGUI.BeginChangeCheck();
 

@@ -5,9 +5,9 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEditor;
 using UnityEditorInternal;
-using AlePostProcessUPR;
+using AlePostProcessURP;
 
-namespace AlePostProcessUPR.Editor
+namespace AlePostProcessURP.Editor
 {
     /// <summary>
     /// A custom property drawer for the settings for custom post-processing feature
