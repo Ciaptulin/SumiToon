@@ -1,6 +1,6 @@
 ﻿// ============================================================
 // 文件：Lit.shader
-// 用途：AleToonURP 卡通着色器主入口：Properties 声明 + 4 个 Pass（ForwardLit / Outline / ShadowCaster / DepthOnly）+ 关键字 pragma
+// 用途：SumiToon 卡通着色器主入口：Properties 声明 + 4 个 Pass（ForwardLit / Outline / ShadowCaster / DepthOnly）+ 关键字 pragma
 // 依赖：同目录 LitPropInput.hlsl、Function.hlsl、LitMain.hlsl、LitOutline.hlsl、LitShadowDepth.hlsl；外部包 OutlineSmoothNormalsGenerator
 // 作者：AleFeng（原作者）    最后修改：2026-11-02
 // 许可：MIT

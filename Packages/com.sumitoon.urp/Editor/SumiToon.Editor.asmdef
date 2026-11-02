@@ -1,6 +1,6 @@
 {
     "name": "SumiToon.Editor",
-    "rootNamespace": "AleToonURP",
+    "rootNamespace": "SumiToon.Editor",
     "references": [
         "Unity.RenderPipelines.Universal.Runtime",
         "SumiToon.Runtime"

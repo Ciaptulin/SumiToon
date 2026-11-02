@@ -124,7 +124,7 @@ namespace SumiToon.Editor
                 if (matProp == null)
                 {
                     if (m_MissingPropLogged.Add(propName)) //同一缺失名只报一次
-                        Debug.LogError($"AleToonURPShaderGUI.GetMaterialProperty() Error!! >> 无效的属性名称-{propName}");
+                        Debug.LogError($"SumiToonShaderGUI.GetMaterialProperty() Error!! >> 无效的属性名称-{propName}");
                 }
                 else
                     m_DicMaterialProperty.Add(propName, matProp);

@@ -26,7 +26,7 @@ git lfs version
 ## 1. 克隆项目
 
 \`\`\`bash
-git clone <repo-url> SumiToon
+git clone https://github.com/SumiToon/SumiToon.git SumiToon
 cd SumiToon
 
 # 拉取 LFS 资产（必须！否则模型、贴图全是占位符）
