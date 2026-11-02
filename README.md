@@ -92,7 +92,7 @@ SumiToon/
 
 ## 开发规范
 
-本项目遵循 [Shader 代码规范](./Learning/notes/)（如有），包括：
+本项目遵循严格的 Shader 代码规范，包括：
 - 文件头（用途 / 依赖 / 作者 / 许可）
 - 命名前缀（`_Tex` / `_Color` / `_Float` / `_Toggle` / `_Int`）
 - 空间后缀（`WS` / `OS` / `VS` / `CS` / `TS`）
