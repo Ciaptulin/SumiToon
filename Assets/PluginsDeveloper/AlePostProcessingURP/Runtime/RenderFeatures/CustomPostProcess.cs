@@ -329,7 +329,9 @@ namespace AlePostProcessUPR
         /// <param name="renderingData">当前绘制数据</param>
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
-            RenderTargetIdentifier target = renderingData.cameraData.renderer.cameraColorTarget;
+            // URP 16: cameraColorTarget 已废弃，改用 cameraColorTargetHandle（RTHandle）
+            // RTHandle 有 implicit operator to RenderTargetIdentifier，下游代码无需改
+            RenderTargetIdentifier target = renderingData.cameraData.renderer.cameraColorTargetHandle;
 
             //相机描述参数 用于设置RT
             m_TempRenderTextureDesc = renderingData.cameraData.cameraTargetDescriptor;

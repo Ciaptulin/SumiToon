@@ -1,98 +1,106 @@
+// ============================================================
+// 文件：SceneTransparentDepth.cs
+// 用途：自定义 RendererFeature，把透明物体的深度渲染到 _CameraTransparentDepthTexture
+//      供水面 Shader 采样（_CameraTransparentDepthTexture）
+// 依赖：URP 16（UnityEngine.Rendering.Universal）、UnityEngine.Experimental.Rendering
+// 作者：AleFeng（原作者）+ SumiToon 迁移到 URP 16    最后修改：2026-11-02
+// 许可：MIT
+// 说明：原版为 URP 14 编写，使用已废弃的 RenderTargetHandle；
+//       本次迁移到 URP 16 的 RTHandle + OnCameraSetup 体系，
+//       参考官方 CopyDepthPass 的纯 depth RT 做法。
+// ============================================================
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Experimental.Rendering;
 
 namespace AlePostProcessUPR
 {
     /// <summary>
-    /// This renderer feature renders the depth of transparent objects to a texture named "_CameraTransparentDepthTexture"
+    /// 渲染透明物体深度到 _CameraTransparentDepthTexture，供水面 Shader 采样。
     /// </summary>
     [Serializable]
     public class SceneTransparentDepth : ScriptableRendererFeature
     {
-        
-        /// <summary>
-        /// The render pass
-        /// </summary>
         private TransparentDepthPass depthPass = null;
 
         /// <summary>
-        /// The render target ID for the scene transparent depth
-        /// URP 16 起 RenderTargetHandle 已废弃，改用 Shader.PropertyToID + int
+        /// 目标纹理名称（Shader 里通过该名称采样）
         /// </summary>
-        private int sceneTransparentDepthTextureId;
+        private const string k_DepthTextureName = "_CameraTransparentDepthTexture";
 
-        /// <summary>
-        /// Intializes the renderer feature resources
-        /// </summary>
         public override void Create()
         {
-            depthPass = new TransparentDepthPass(RenderPassEvent.AfterRenderingPrePasses, RenderQueueRange.transparent, -1);
-            sceneTransparentDepthTextureId = Shader.PropertyToID("_CameraTransparentDepthTexture");
+            depthPass = new TransparentDepthPass(
+                RenderPassEvent.AfterRenderingPrePasses,
+                RenderQueueRange.transparent,
+                -1);
+            depthPass.Setup(k_DepthTextureName);
         }
 
-        /// <summary>
-        /// Here you can inject one or multiple render passes in the renderer.
-        /// This method is called when setting up the renderer once per-camera.
-        /// </summary>
         public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
         {
-            depthPass.Setup(sceneTransparentDepthTextureId);
             renderer.EnqueuePass(depthPass);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            // 释放 RTHandle
+            depthPass?.ReleaseResources();
+            base.Dispose(disposing);
         }
     }
 
     /// <summary>
-    /// Render all transparent objects that have a 'DepthOnly' pass into the given depth buffer.
-    ///
-    /// You can use this pass to prime a depth buffer for subsequent rendering.
-    /// Use it as a z-prepass, or use it to generate a depth buffer.
-    /// 
-    /// Code mostly copied from "DepthOnlyPass.cs" from the Universal Render Pipeline
+    /// 渲染所有带 'DepthOnly' pass 的透明物体到目标深度缓冲。
+    /// 迁移说明：URP 16 起 ConfigureTarget 需要 RTHandle，
+    ///           RT 通过 RenderingUtils.ReAllocateIfNeeded 分配，
+    ///           纯 depth RT 的做法参考官方 CopyDepthPass。
     /// </summary>
     public class TransparentDepthPass : ScriptableRenderPass
     {
         int kDepthBufferBits = 32;
 
-        private int destinationId = -1;  // -1 表示未设置（对应旧的 RenderTargetHandle.CameraTarget 语义）
+        private RTHandle destination;
+        private string destinationName;
 
         FilteringSettings m_FilteringSettings;
         const string m_ProfilerTag = "Transparent Depth Prepass";
         ProfilingSampler m_ProfilingSampler = new ProfilingSampler(m_ProfilerTag);
         ShaderTagId m_ShaderTagId = new ShaderTagId("DepthOnly");
 
-        /// <summary>
-        /// Create the TransparentDepthPass
-        /// </summary>
         public TransparentDepthPass(RenderPassEvent evt, RenderQueueRange renderQueueRange, LayerMask layerMask)
         {
             m_FilteringSettings = new FilteringSettings(renderQueueRange, layerMask);
             renderPassEvent = evt;
+            useNativeRenderPass = false;
         }
 
-        /// <summary>
-        /// Configure the pass
-        /// </summary>
-        public void Setup(int destinationId)
+        public void Setup(string name)
         {
-            this.destinationId = destinationId;
+            this.destinationName = name;
         }
 
-        public override void Configure(CommandBuffer cmd, RenderTextureDescriptor cameraTextureDescriptor)
+        public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
         {
-            RenderTextureDescriptor descriptor = cameraTextureDescriptor;
-            descriptor.colorFormat = RenderTextureFormat.Depth;
+            var descriptor = renderingData.cameraData.cameraTargetDescriptor;
+            // URP 16 用 GraphicsFormat 指定深度格式；纯 depth RT 只设 graphicsFormat
+            descriptor.graphicsFormat = GraphicsFormat.D32_SFloat_S8_UInt;
             descriptor.depthBufferBits = kDepthBufferBits;
             descriptor.msaaSamples = 1;
 
-            cmd.GetTemporaryRT(destinationId, descriptor, FilterMode.Point);
-            ConfigureTarget(new RenderTargetIdentifier(destinationId));
-            ConfigureClear(ClearFlag.All, Color.black);
+            RenderingUtils.ReAllocateIfNeeded(ref destination, descriptor, name: destinationName);
+
+            if (destination != null)
+            {
+                // 纯 depth RT：color 和 depth attachment 都指向同一个 handle
+                // 这是 URP 官方 CopyDepthPass 在 D3D11 下的做法
+                ConfigureTarget(destination, destination);
+                ConfigureClear(ClearFlag.All, Color.black);
+            }
         }
 
-        /// <inheritdoc/>
         public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
         {
             CommandBuffer cmd = CommandBufferPool.Get(m_ProfilerTag);
@@ -107,27 +115,26 @@ namespace AlePostProcessUPR
 
                 ref CameraData cameraData = ref renderingData.cameraData;
                 Camera camera = cameraData.camera;
-                
                 m_FilteringSettings.layerMask = camera.cullingMask;
 
                 context.DrawRenderers(renderingData.cullResults, ref drawSettings, ref m_FilteringSettings);
-
             }
             context.ExecuteCommandBuffer(cmd);
             CommandBufferPool.Release(cmd);
         }
 
-        /// <inheritdoc/>
-        public override void FrameCleanup(CommandBuffer cmd)
+        public override void OnCameraCleanup(CommandBuffer cmd)
         {
-            if (cmd == null)
-                throw new ArgumentNullException("cmd");
+            // RT 由 RTHandleSystem 管理，跨 camera 复用，不在这里释放
+        }
 
-            if (destinationId != -1)
-            {
-                cmd.ReleaseTemporaryRT(destinationId);
-                destinationId = -1;
-            }
+        /// <summary>
+        /// 释放 RTHandle（由 Feature.Dispose 调用）
+        /// </summary>
+        public void ReleaseResources()
+        {
+            destination?.Release();
+            destination = null;
         }
     }
 }
