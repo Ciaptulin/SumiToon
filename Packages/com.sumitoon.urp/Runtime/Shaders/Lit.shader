@@ -139,6 +139,21 @@ Shader "SumiToon/Lit"
         _TexMatCapMaskMap ("MatCap MaskMap", 2D) = "white" {} //遮罩贴图
         _FloatMatCapMaskMapIntensity ("MatCap MaskMap Intensity", Range(-1, 1)) = 0 //遮罩贴图强度
 // =============== 材质捕获 Matcap ===============
+// =============== 面部 SDF 阴影 FaceSDF ===============
+        [Toggle(_FACESDF_ON)] _ToggleFaceSDF ("FaceSDF Toggle", Float) = 0 //开关 面部SDF
+        _TexFaceSDFPositive ("FaceSDF PositiveX", 2D) = "white" {} //SDF 正向（光照来自角色右侧）
+        _TexFaceSDFNegative ("FaceSDF NegativeX", 2D) = "white" {} //SDF 负向（光照来自角色左侧）
+        _TexFaceSDFThresholdPositive ("FaceSDF Threshold PositiveX", 2D) = "white" {} //阈值图 正向
+        _TexFaceSDFThresholdNegative ("FaceSDF Threshold NegativeX", 2D) = "white" {} //阈值图 负向
+        _FloatFaceSDFIntensity ("FaceSDF Intensity", Range(0, 1)) = 1 //SDF 阴影强度
+        _FloatFaceSDFThreshold ("FaceSDF Threshold", Range(0, 1)) = 0.5 //SDF 阴影阈值
+        _FloatFaceSDFSoftness ("FaceSDF Softness", Range(0.001, 0.5)) = 0.05 //SDF 阴影羽化
+        _FloatFaceSDFAngleOffset ("FaceSDF Angle Offset (°)", Range(-180, 180)) = 0 //SDF 角度偏移
+        _FloatFaceSDFAngleScale ("FaceSDF Angle Scale", Range(0.1, 2)) = 1 //SDF 角度缩放
+        _FaceSDFForwardWS ("头部前向轴 (WS)", Vector) = (0, 0, 1, 0)
+        _FaceSDFRightWS ("头部右向轴 (WS)", Vector) = (1, 0, 0, 0)
+        _FloatFaceSDFDebugFrame ("调试帧 (-1为自动)", Range(-1, 8)) = -1
+// =============== 面部 SDF 阴影 FaceSDF ===============
 // =============== 光照设置 Light ===============
         _FloatRealtimeLightIntensity ("Realtime Light Intensity", Range(0, 10)) = 5 //实时光照强度
         _FloatEnvLightIntensity ("Environment Light Intensity", Range(0, 10)) = 2 //环境光照强度
@@ -262,6 +277,8 @@ Shader "SumiToon/Lit"
 			#pragma shader_feature_local _ADDLIGHT_ON
             //关键词 内置光照
             #pragma shader_feature_local _BUILTINLIGHT_ON
+            //关键词 面部SDF
+            #pragma shader_feature_local _FACESDF_ON
 
             //顶点/片元着色器
             #pragma vertex vert
@@ -271,6 +288,7 @@ Shader "SumiToon/Lit"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
             #include "LitPropInput.hlsl"
             #include "Function.hlsl"
+            #include "LitFaceSDF.hlsl"
             #include "LitMain.hlsl"
         ENDHLSL
         }

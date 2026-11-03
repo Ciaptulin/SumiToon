@@ -188,6 +188,24 @@
             halfLambert = saturate(halfLambert - shadeThresholdValue);
         #endif
 
+        //面部SDF阴影：用主光角度采样SDF图，替换面部区域的halfLambert
+        #if defined(_FACESDF_ON)
+            half faceSDFMask = ComputeFaceSDFMask(
+                uv0,
+                _FaceSDFLightDirLocal.xyz,
+                _FloatFaceSDFThreshold,
+                _FloatFaceSDFSoftness,
+                _FloatFaceSDFAngleOffset,
+                _FloatFaceSDFAngleScale,
+                _FloatFaceSDFDebugFrame);
+            //SDF mask = 1 表示阴影，1 - mask 即该像素的光照系数
+            //为了让 SDF 不把原本应该受光的地方强行拉亮，我们只取最小值（只做阴影叠加）
+            half sdfLambert = 1.0 - faceSDFMask;
+            // 用强度控制混合
+            sdfLambert = lerp(1.0, sdfLambert, _FloatFaceSDFIntensity);
+            halfLambert = min(halfLambert, sdfLambert);
+        #endif
+
         //暗部1 光照强度（用局部量，不写回 CBUFFER 成员）
         // 0.1 把美术 0~10 的模糊滑块压到 shader 需要的 0~1 区间
         float blur1 = _FloatBrightShade1Blur * 0.1;

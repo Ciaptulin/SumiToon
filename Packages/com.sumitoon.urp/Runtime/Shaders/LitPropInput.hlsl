@@ -48,6 +48,13 @@
     TEXTURE2D(_TexMatCapMaskMap); SAMPLER(sampler_TexMatCapMaskMap); //材质捕获 遮罩贴图贴图
     #endif
 
+    #if defined(_FACESDF_ON)
+    TEXTURE2D(_TexFaceSDFPositive); SAMPLER(sampler_TexFaceSDFPositive); //面部SDF 正向
+    TEXTURE2D(_TexFaceSDFNegative); SAMPLER(sampler_TexFaceSDFNegative); //面部SDF 负向
+    TEXTURE2D(_TexFaceSDFThresholdPositive); SAMPLER(sampler_TexFaceSDFThresholdPositive); //阈值图 正向
+    TEXTURE2D(_TexFaceSDFThresholdNegative); SAMPLER(sampler_TexFaceSDFThresholdNegative); //阈值图 负向
+    #endif
+
     CBUFFER_START(UnityPerMaterial)
 
     //裁剪Clip
@@ -153,6 +160,18 @@
     float4 _TexMatCapMaskMap_ST; //遮罩贴图
     half _FloatMatCapMaskMapIntensity; //遮罩贴图强度
 
+    //面部SDF阴影
+    half _ToggleFaceSDF; //开关 面部SDF
+    float4 _TexFaceSDFPositive_ST; //SDF 正向
+    float4 _TexFaceSDFNegative_ST; //SDF 负向
+    float4 _TexFaceSDFThresholdPositive_ST; //阈值图 正向
+    float4 _TexFaceSDFThresholdNegative_ST; //阈值图 负向
+    half _FloatFaceSDFIntensity; //SDF 阴影强度
+    half _FloatFaceSDFThreshold; //SDF 阴影阈值
+    half _FloatFaceSDFSoftness; //SDF 阴影羽化
+    half _FloatFaceSDFAngleOffset; //SDF 角度偏移（度）
+    half _FloatFaceSDFAngleScale; //SDF 角度缩放
+
     //光照设置
     half _FloatRealtimeLightIntensity; //实时光照强度
     half _FloatEnvLightIntensity; //环境光照强度
@@ -189,5 +208,11 @@
     half _FloatBuiltInLightColorBlend; //内置光照颜色 混合强度
 
     CBUFFER_END
+
+    // 面部SDF：头部朝向（世界空间），由 C# 每帧通过 Shader.SetGlobalVector 写入
+    // 放在 CBUFFER 外，避免破坏 SRP Batcher（不随实例变化）
+    float4 _FaceSDFLightDirLocal;
+    half _FloatFaceSDFDebugFrame;
+
 // ================== 属性声明 ==================
 #endif

@@ -21,6 +21,7 @@ namespace SumiToon.Editor
             ShaderGUIExtension.FoldoutPanel("【高光 HighLight】颜色、大小、遮罩", PanelMainHighLight);
             ShaderGUIExtension.FoldoutPanel("【自发光 Emissive】遮罩、颜色(HDR)、动画", PanelMainEmissive);
             ShaderGUIExtension.FoldoutPanel("【材质捕获 Matcap】贴图、遮罩、法线", PanelMainMatCap);
+            ShaderGUIExtension.FoldoutPanel("【面部 SDF 阴影 FaceSDF】SDF贴图、阈值、羽化（洛茜专用）", PanelMainFaceSDF);
             ShaderGUIExtension.FoldoutPanel("【光照设置 LightSetting】光照开关、光照强度", PanelMainGlobalLight);
         }
 
@@ -1277,6 +1278,58 @@ namespace SumiToon.Editor
             EditorGUILayout.Space();
         }
         #endregion
+        #endregion
+
+        #region 主面板 面部 SDF 阴影
+        private static GUIContent m_ContentFaceSDFToggle = new GUIContent("面部 SDF 开关", "开启后使用 SDF 图集计算面部阴影，替换普通 NdotL。洛茜专用。");
+        private static GUIContent m_ContentFaceSDFPosTex = new GUIContent("SDF 正向图集", "光照来自角色右侧时使用。2304x2304，3x3共9帧。");
+        private static GUIContent m_ContentFaceSDFNegTex = new GUIContent("SDF 负向图集", "光照来自角色左侧时使用。2304x2304，3x3共9帧。");
+        private static GUIContent m_ContentFaceSDFThPosTex = new GUIContent("阈值图 正向", "768x768 单帧。");
+        private static GUIContent m_ContentFaceSDFThNegTex = new GUIContent("阈值图 负向", "768x768 单帧。");
+
+        private const string m_MatKeywordFaceSDFOn = "_FACESDF_ON";
+
+        private void PanelMainFaceSDF()
+        {
+            var matPropToggleFaceSDF = GetMaterialProperty("_ToggleFaceSDF");
+            ShaderGUIExtension.BtnToggleLabel(m_ContentFaceSDFToggle, matPropToggleFaceSDF);
+
+            // 关键词同步
+            if (matPropToggleFaceSDF.floatValue == 1)
+                EnableKeyword(m_MatKeywordFaceSDFOn);
+            else
+            {
+                DisableKeyword(m_MatKeywordFaceSDFOn);
+                return;
+            }
+
+            EditorGUILayout.Space();
+
+            // 贴图槽
+            var texPos = GetMaterialProperty("_TexFaceSDFPositive");
+            m_MaterialEditor.TexturePropertySingleLine(m_ContentFaceSDFPosTex, texPos);
+
+            var texNeg = GetMaterialProperty("_TexFaceSDFNegative");
+            m_MaterialEditor.TexturePropertySingleLine(m_ContentFaceSDFNegTex, texNeg);
+
+            var texThPos = GetMaterialProperty("_TexFaceSDFThresholdPositive");
+            m_MaterialEditor.TexturePropertySingleLine(m_ContentFaceSDFThPosTex, texThPos);
+
+            var texThNeg = GetMaterialProperty("_TexFaceSDFThresholdNegative");
+            m_MaterialEditor.TexturePropertySingleLine(m_ContentFaceSDFThNegTex, texThNeg);
+
+            EditorGUILayout.Space();
+
+            // 参数
+            m_MaterialEditor.RangeProperty(GetMaterialProperty("_FloatFaceSDFIntensity"), "阴影强度");
+            m_MaterialEditor.RangeProperty(GetMaterialProperty("_FloatFaceSDFThreshold"), "阴影阈值");
+            m_MaterialEditor.RangeProperty(GetMaterialProperty("_FloatFaceSDFSoftness"), "阴影羽化");
+            m_MaterialEditor.RangeProperty(GetMaterialProperty("_FloatFaceSDFAngleOffset"), "角度偏移（°）");
+            m_MaterialEditor.RangeProperty(GetMaterialProperty("_FloatFaceSDFAngleScale"), "角度缩放");
+            m_MaterialEditor.RangeProperty(GetMaterialProperty("_FloatFaceSDFDebugFrame"), "调试帧(0-8)");
+
+            EditorGUILayout.Space();
+        }
         #endregion
     }
 }
