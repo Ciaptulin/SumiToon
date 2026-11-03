@@ -6,6 +6,16 @@
 // 许可：MIT
 // ============================================================
 
+// ================== 噪声函数 ==================
+    float hash_grass(float2 p) { return frac(sin(dot(p, float2(127.1, 311.7))) * 43758.5453123); }
+    float noise_grass(float2 p) {
+        float2 i = floor(p); float2 f = frac(p);
+        float a = hash_grass(i); float b = hash_grass(i + float2(1.0, 0.0));
+        float c = hash_grass(i + float2(0.0, 1.0)); float d = hash_grass(i + float2(1.0, 1.0));
+        float2 u = f * f * (3.0 - 2.0 * f);
+        return lerp(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+    }
+
 // ================== 结构体定义 ==================
     struct AttributesAleToon
     {
@@ -40,6 +50,35 @@
     VaryingsAleToon vert (AttributesAleToon IN) 
     {
         VaryingsAleToon OUT = (VaryingsAleToon)0;
+
+        // --- 风场顶点动画 ---
+        #if defined(_WIND_ON)
+            // 用 UV 的 Y 轴作为遮罩，确保草的根部不动，只有叶子动
+            half windMask = pow(IN.texcoord.y, 2.0); 
+            
+            // 获取世界坐标
+            float3 posWS = TransformObjectToWorld(IN.positionOS.xyz);
+            
+            // 【核心修改】用世界坐标采样噪声，随时间移动，形成“阵风”
+            float n = noise_grass(posWS.xz * 0.5 - _Time.y * _WindSpeed * 0.5);
+
+            // 叠加两层正弦波
+            float phase1 = _Time.y * _WindSpeed + posWS.x * 0.8 + posWS.z * 0.8;
+            float phase2 = _Time.y * _WindSpeed * 1.5 + posWS.x * 2.1 - posWS.z * 1.7;
+            
+            float wave1 = sin(phase1);
+            float wave2 = sin(phase2) * 0.5;
+            float wave = (wave1 + wave2) * 0.5 + 0.5; 
+            
+            // 【核心修改】把原本规律的正弦波，和噪声混合。
+            // 这样有的地方草在狂摆，有的地方草几乎不动，彻底打碎规律感
+            wave = lerp(wave, wave * n * 2.0, 0.7); 
+            
+            float3 windDir = normalize(_WindDirection.xyz);
+            // 在对象空间移动顶点
+            IN.positionOS.xyz += windDir * wave * _WindStrength * windMask;
+        #endif
+        // -------------------
 
         //SRP-Batcher优先于GPU-Instance 互斥
         UNITY_SETUP_INSTANCE_ID(IN);

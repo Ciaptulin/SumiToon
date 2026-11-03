@@ -13,6 +13,7 @@ namespace SumiToon.Editor
             base.OnGUIAleToon();
 
             //主面板列表
+            ShaderGUIExtension.FoldoutPanel("【风场 Wind】草木随风摆动", PanelMainWind);
             ShaderGUIExtension.FoldoutPanel("【基础设置 Basic】透明类型、渲染面、模板测试、剔除", PanelMainBasicSetting);
             ShaderGUIExtension.FoldoutPanel("【基础贴图 BaseMap】基础贴图&颜色、暗部贴图&颜色", PanelMainBasicMap);
             ShaderGUIExtension.FoldoutPanel("【法线贴图 NormalMap】强度、效果开关", PanelMainNormalMap);
@@ -1278,6 +1279,29 @@ namespace SumiToon.Editor
             EditorGUILayout.Space();
         }
         #endregion
+        #endregion
+
+        #region 主面板 风场动画
+        private static GUIContent m_ContentWindToggle = new GUIContent("开启风场", "开启后草、树叶等模型会随风摆动");
+        
+        private const string m_MatKeywordWindOn = "_WIND_ON";
+
+        private void PanelMainWind()
+        {
+            var matPropToggleWind = GetMaterialProperty("_ToggleWind");
+            ShaderGUIExtension.BtnToggleLabel(m_ContentWindToggle, matPropToggleWind);
+
+            if (matPropToggleWind.floatValue == 1) EnableKeyword(m_MatKeywordWindOn);
+            else DisableKeyword(m_MatKeywordWindOn);
+
+            if (matPropToggleWind.floatValue != 1) return;
+
+            EditorGUILayout.Space();
+            m_MaterialEditor.RangeProperty(GetMaterialProperty("_WindStrength"), "风力强度");
+            m_MaterialEditor.FloatProperty(GetMaterialProperty("_WindSpeed"), "风速");
+            m_MaterialEditor.VectorProperty(GetMaterialProperty("_WindDirection"), "风向");
+            EditorGUILayout.Space();
+        }
         #endregion
 
         #region 主面板 面部 SDF 阴影

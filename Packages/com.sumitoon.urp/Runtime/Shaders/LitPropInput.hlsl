@@ -57,6 +57,12 @@
 
     CBUFFER_START(UnityPerMaterial)
 
+    //风场
+    half _ToggleWind;
+    half _WindStrength;
+    half _WindSpeed;
+    float4 _WindDirection;
+
     //裁剪Clip
     float4 _TexClipMaskMap_ST; //裁剪遮罩 贴图
     half _FloatClipIntensity; //裁剪强度

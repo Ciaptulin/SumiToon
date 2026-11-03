@@ -9,6 +9,13 @@ Shader "SumiToon/Lit"
 {
     Properties
     {
+// =============== 风场动画 Wind ===============
+        [Toggle(_WIND_ON)] _ToggleWind ("开启风场 Wind", Float) = 0
+        _WindStrength ("风力强度", Range(0, 2)) = 0.3
+        _WindSpeed ("风速", Float) = 1.0
+        _WindDirection ("风向 (XZ)", Vector) = (1, 0, 1, 0)
+// =============== 风场动画 Wind ===============
+
 // =============== 基础设置 Basic ===============
         //基础
         [Enum(Off,0,On,1)] _IntSurfaceType("Surface Type", int) = 0 //表面类型 0不透明/1透明 ●仅用于记录 设置关键词开启
@@ -271,6 +278,8 @@ Shader "SumiToon/Lit"
             #pragma shader_feature_local _EMISSIVE_ON
             #pragma shader_feature_local _EMISSIVE_FIXED _EMISSIVE_ANIM
             //关键词 材质捕获
+            //关键词 风场
+            #pragma shader_feature_local _WIND_ON
             #pragma shader_feature_local _MATCAP_ON
             #pragma shader_feature_local _MATCAP_COLORBLEND_ADDITIVE _MATCAP_COLORBLEND_MULTIPLY _MATCAP_COLORBLEND_LERP
 			//关键词 附加光照

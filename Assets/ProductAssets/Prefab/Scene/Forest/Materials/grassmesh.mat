@@ -9,13 +9,16 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: grassmesh
   m_Shader: {fileID: 4800000, guid: 4f14c3ce624ffe441bc92162058fe263, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _OUTLINE_WIDTH_SAME
   - _SURFACETYPE_TRANSPARENT
+  - _WIND_ON
   m_InvalidKeywords:
   - _FLOATOUTLINETYPE_NORMAL
   - _FLOATOUTLINETYPE_VERTNORMAL
   - _FLOATOUTLINEWIDTHTYPE_SAME
+  - _OUTLINE_WIDTH_SAME
   - _TOGGLEEMISSIVEANIM_FIXED
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -26,6 +29,7 @@ Material:
     RenderType: Transparent
   disabledShaderPasses:
   - SRPDEFAULTUNLIT
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -74,6 +78,22 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TexEmissiveMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TexFaceSDFNegative:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TexFaceSDFPositive:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TexFaceSDFThresholdNegative:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TexFaceSDFThresholdPositive:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -149,6 +169,12 @@ Material:
     - _FloatEmissiveAnimUVType: 0
     - _FloatEmissiveChangeSpeed: 0
     - _FloatEnvLightIntensity: 2
+    - _FloatFaceSDFAngleOffset: 0
+    - _FloatFaceSDFAngleScale: 1
+    - _FloatFaceSDFDebugFrame: -1
+    - _FloatFaceSDFIntensity: 1
+    - _FloatFaceSDFSoftness: 0.05
+    - _FloatFaceSDFThreshold: 0.5
     - _FloatGIIntensity: 1
     - _FloatGlobalExposureIntensity: 2.2
     - _FloatHighLightMaskMapIntensity: 0
@@ -162,10 +188,14 @@ Material:
     - _FloatMatCapShadowMaskIntensity: 0
     - _FloatNormalMapBump: 1
     - _FloatOutlineBaseMapBlendIntensity: 1
+    - _FloatOutlineNormalSource: 6
+    - _FloatOutlineNormalSpace: 1
     - _FloatOutlineTexMapIntensity: 1
     - _FloatOutlineThresholdMapIntensity: 1
     - _FloatOutlineType: 0
+    - _FloatOutlineVCChannel: 2
     - _FloatOutlineWidth: 0
+    - _FloatOutlineWidthMode: 0
     - _FloatOutlineWidthType: 0
     - _FloatRealtimeLightIntensity: 2.5
     - _FloatRimLightInsideDistance: 0.0001
@@ -199,6 +229,7 @@ Material:
     - _ToggleEmissiveAnimPingpong: 0
     - _ToggleEmissiveChangeColor: 0
     - _ToggleEmissiveViewChangeColor: 0
+    - _ToggleFaceSDF: 0
     - _ToggleGlobalLightBaseMap: 1
     - _ToggleGlobalLightBaseShade1: 1
     - _ToggleGlobalLightBaseShade2: 1
@@ -232,7 +263,10 @@ Material:
     - _ToggleShadeThresholdMap: 0
     - _ToggleShadowCaster: 1
     - _ToggleShadowReceive: 1
+    - _ToggleWind: 1
     - _TranslucencyViewDependency: 0.575
+    - _WindSpeed: 1
+    - _WindStrength: 0.3
     - __dirty: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
@@ -249,9 +283,13 @@ Material:
     - _ColorRimLightShadeColor: {r: 1, g: 1, b: 1, a: 1}
     - _ColorShade1Color: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 1}
     - _ColorShade2Color: {r: 0.2264151, g: 0.2264151, b: 0.2264151, a: 1}
+    - _FaceSDFForwardWS: {r: 0, g: 0, b: 1, a: 0}
+    - _FaceSDFRightWS: {r: 1, g: 0, b: 0, a: 0}
     - _FloatRimLightShadeColor: {r: 1, g: 1, b: 1, a: 1}
     - _Scale: {r: 1, g: 1, b: 1, a: 1}
     - _TranslucencyColor: {r: 0.73, g: 0.85, b: 0.41, a: 1}
     - _TreeInstanceColor: {r: 1, g: 1, b: 1, a: 1}
     - _TreeInstanceScale: {r: 1, g: 1, b: 1, a: 1}
+    - _WindDirection: {r: 1, g: 0, b: 1, a: 0}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1
