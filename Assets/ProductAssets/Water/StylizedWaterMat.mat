@@ -24,12 +24,12 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: f5a478c0ba634ae4da4c8805d853829a, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DepthMaxDistance: 1.5
+    - _DepthMaxDistance: 3
     - _FoamDistance: 0.15
     - _FoamSpeed: 1
     - _FoamThreshold: 0.8
@@ -37,11 +37,11 @@ Material:
     - _RefractionIntensity: 0.03
     - _SpecSmoothness: 0.5
     - _SpecThreshold: 0.8
-    - _WaveSpeed: 0.5
+    - _WaveSpeed: 0.05
     m_Colors:
-    - _DeepColor: {r: 0.05, g: 0.2, b: 0.5, a: 1}
+    - _DeepColor: {r: 0.15448354, g: 0.25494856, b: 0.45911938, a: 1}
     - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
-    - _ShallowColor: {r: 0.1, g: 0.8, b: 0.9, a: 0.2}
+    - _ShallowColor: {r: 0, g: 0.8113208, b: 0.7444077, a: 0.2}
     - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

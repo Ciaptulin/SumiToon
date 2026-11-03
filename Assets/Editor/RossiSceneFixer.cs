@@ -7,7 +7,7 @@ public class RossiSceneFixer
     public static void FixMaterials()
     {
         // 找到场景里所有的 SkinnedMeshRenderer 和 MeshRenderer
-        var renderers = Object.FindObjectsOfType<Renderer>(true);
+        var renderers = Object.FindObjectsByType<Renderer>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         int fixedCount = 0;
 
         string matDir = "Assets/ProductAssets/Prefab/Character/Rossi/Materials/";

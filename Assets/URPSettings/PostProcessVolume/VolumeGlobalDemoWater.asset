@@ -637,20 +637,6 @@ MonoBehaviour:
   - {fileID: 7216295821100439175}
   - {fileID: 2991482886347858349}
   - {fileID: -336385743171331673}
-  - {fileID: 4414080793998481470}
-  - {fileID: -1668979217343059246}
-  - {fileID: -3096370544337336859}
-  - {fileID: 8810256068555348138}
-  - {fileID: -2678316189464132282}
-  - {fileID: 8095780529822514427}
-  - {fileID: 8572712700759932691}
-  - {fileID: -2255330184865592846}
-  - {fileID: 6607556185344934809}
-  - {fileID: -1603825237454581039}
-  - {fileID: -7348083269390667026}
-  - {fileID: -2132424123133276081}
-  - {fileID: 894229555811171453}
-  - {fileID: -4274492270361141401}
 --- !u!114 &894229555811171453
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -692,6 +678,30 @@ MonoBehaviour:
   mode:
     m_OverrideState: 1
     m_Value: 0
+  neutralHDRRangeReductionMode:
+    m_OverrideState: 0
+    m_Value: 2
+  acesPreset:
+    m_OverrideState: 0
+    m_Value: 3
+  hueShiftAmount:
+    m_OverrideState: 0
+    m_Value: 0
+  detectPaperWhite:
+    m_OverrideState: 0
+    m_Value: 0
+  paperWhite:
+    m_OverrideState: 0
+    m_Value: 300
+  detectBrightnessLimits:
+    m_OverrideState: 0
+    m_Value: 1
+  minNits:
+    m_OverrideState: 0
+    m_Value: 0.005
+  maxNits:
+    m_OverrideState: 0
+    m_Value: 1000
 --- !u!114 &1991064074288609455
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -745,6 +755,9 @@ MonoBehaviour:
   m_Name: Bloom
   m_EditorClassIdentifier: 
   active: 1
+  skipIterations:
+    m_OverrideState: 1
+    m_Value: 4
   threshold:
     m_OverrideState: 1
     m_Value: 0.1
@@ -763,9 +776,12 @@ MonoBehaviour:
   highQualityFiltering:
     m_OverrideState: 0
     m_Value: 1
-  skipIterations:
-    m_OverrideState: 1
-    m_Value: 4
+  downscale:
+    m_OverrideState: 0
+    m_Value: 0
+  maxIterations:
+    m_OverrideState: 0
+    m_Value: 6
   dirtTexture:
     m_OverrideState: 0
     m_Value: {fileID: 0}
@@ -838,13 +854,13 @@ MonoBehaviour:
   active: 1
   mode:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 2
   gaussianStart:
     m_OverrideState: 1
-    m_Value: 3
+    m_Value: 1
   gaussianEnd:
     m_OverrideState: 1
-    m_Value: 6
+    m_Value: 3
   gaussianMaxRadius:
     m_OverrideState: 1
     m_Value: 0.5
@@ -853,7 +869,7 @@ MonoBehaviour:
     m_Value: 0
   focusDistance:
     m_OverrideState: 1
-    m_Value: 0.7
+    m_Value: 6
   aperture:
     m_OverrideState: 1
     m_Value: 1

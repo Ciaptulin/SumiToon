@@ -98,34 +98,44 @@ half4 frag (Varyings IN) : SV_Target
     float2 distortion = normalTS.xy * _RefractionIntensity * depth01;
     half3 colorRefract = SampleSceneColor(uvScreen + distortion).rgb;
 
-    // 3. 颜色混合（拒绝蓝漆，清澈见底）
-    half3 waterColor = lerp(colorRefract * _ShallowColor.rgb, _DeepColor.rgb, depth01);
+    // 3. 风格化颜色混合（【淡化版】浅水区只染一点点色，主要透出底图）
+    // 只给浅水混入 30% 的水色，保留 70% 水底原本的颜色
+    half3 shallowTint = lerp(colorRefract, colorRefract * _ShallowColor.rgb, 0.3); 
+    half3 deepTint = _DeepColor.rgb;
     
-    // 边缘菲涅尔反射（稍微加点白边）
-    float fresnel = pow(1.0 - saturate(dot(normalWS, viewDirWS)), 3.0);
-    waterColor = lerp(waterColor, half3(1,1,1), fresnel * 0.3);
+    // 推迟深水色的介入，让浅水区变得更大
+    float colorEdge = smoothstep(0.4, 1.5, depth01);
+    half3 waterColor = lerp(shallowTint, deepTint, colorEdge);
 
-    // 4. 卡通碎光高光（限制高光强度，防爆白）
+    // 4. 卡通碎光高光
     Light mainLight = GetMainLight();
     float3 halfDir = normalize(viewDirWS + mainLight.direction);
     float ndoth = saturate(dot(normalWS, halfDir));
-    float specMask = smoothstep(0.8, 0.9, ndoth) * _SpecThreshold;
+    float specMask = smoothstep(_SpecThreshold, _SpecThreshold + 0.05, ndoth);
     half3 spec = _SpecColor.rgb * specMask * _SpecSmoothness;
 
-    // 5. 岸边泡沫（窄边）
+    // 5. 岸边泡沫（【软化+打碎】除掉胶带感）
     float foamDepth = saturate(1.0 - (depthDifference / _FoamDistance));
-    float foamMask = smoothstep(_FoamThreshold - 0.05, _FoamThreshold + 0.05, foamDepth);
+    float noise1 = noise(IN.positionWS.xz * 8.0);
+    float noise2 = noise(IN.positionWS.xz * 25.0);
+    // 加大噪波权重，彻底撕裂白边
+    float foamNoise = noise1 * 0.7 + noise2 * 0.3;
+    
+    // 用 smoothstep 代替 step，让泡沫边缘有羽化过渡
+    float foamMask = smoothstep(0.7, 0.95, foamDepth + foamNoise * 0.3);
     foamMask = saturate(foamMask);
 
     // 6. 最终输出
     half3 finalColor = waterColor + spec;
-    finalColor = lerp(finalColor, _FoamColor.rgb, foamMask);
+    // 混合泡沫时只混 80%，让泡沫透出一点底色，不再是死白
+    finalColor = lerp(finalColor, _FoamColor.rgb, foamMask * 0.8);
     finalColor = MixFog(finalColor, IN.fogFactor);
 
-    // 关键透明度：浅水极度透明，深水逐渐不透明
-    half alpha = smoothstep(0.01, 1.0, depth01);
-    alpha = max(alpha, foamMask); 
-    alpha = max(alpha, 0.15);
+    // 【透明度】延长浅水区的完全透明范围
+    half alpha = smoothstep(0.01, 1.2, depth01);
+    // 泡沫区域半透明，不再是实心胶带
+    alpha = max(alpha, foamMask * 0.6); 
+    alpha = max(alpha, 0.05);
 
     return half4(finalColor, alpha);
 }
